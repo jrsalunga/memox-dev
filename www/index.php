@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+﻿<!DOCTYPE HTML>
 <html lang="en-ph">
 <head>
 <meta charset="utf-8">
@@ -47,7 +47,7 @@
 
 $(document).ready(function(e) {
 	
-
+});
 </script>
 
 </head>
@@ -93,9 +93,13 @@ $(document).ready(function(e) {
             			<div class="kk">Masterfiles</div>
             		</div>
                     <ul class="fd">
-                        <li><a href="masterfiles/matcat">Products Category</a></li>
-                        <li><a href="masterfiles/material">Products</a></li>
-                    	<li><a href="masterfiles/itemcat">Items Category</a></li>
+                        <li><a href="masterfiles/brand">Brands</a></li>
+                        <li><a href="masterfiles/model">Models</a></li>
+                        <li><a href="masterfiles/prodcat">Products Category</a></li>
+                        <li><a href="masterfiles/product">Products</a></li>
+                    	<li><a href="masterfiles/propcat">Properties Category</a></li>
+                        <li><a href="masterfiles/property">Properties</a></li>
+                        <li><a href="masterfiles/itemcat">Items Category</a></li>
                         <li><a href="masterfiles/item">Item</a></li>
                         <li><a href="masterfiles/supplier">Supplier</a></li>
                         <li><a href="masterfiles/bank">Bank</a></li>

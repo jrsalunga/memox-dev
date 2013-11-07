@@ -1,4 +1,4 @@
-/* CSS Document */
+﻿/* CSS Document */
 
 
 
@@ -472,11 +472,11 @@ button.minibutton[disabled]:hover {
 
 
 .tb-data tbody tr td.currency{
-  width: 8%;
+ /* width: 8%; */
 }
 
 .tb-data tbody tr td.number{
-  width: 8%;
+ /* width: 8%; */
 }
 
 .tb-data-action {
@@ -544,6 +544,22 @@ button.minibutton[disabled]:hover {
   font-weight: bold;
 }
 
+.search-detail {
+	position: relative;
+	
+}
+
+.search-detail-icon {
+	
+	vertical-align: middle;
+	font-size: 20px;
+	
+}
+.search-detail-icon.success:after {
+	color: #2ecc71;
+	content: "\2714";
+}
+
 
 
 
@@ -585,6 +601,7 @@ button.minibutton[disabled]:hover {
 
 .dataTables_length select{
     width:60px;
+	margin: 4px 0;
 }
 
 
@@ -693,6 +710,10 @@ button:hover > div {
 	width: 700px;
 }
 
+#mdl-frm-product > .modal-dialog {
+    width: 700px;
+}
+
 
 
 /*********** Modal table ***************/
@@ -757,18 +778,260 @@ button:hover > div {
 	padding-bottom: 20px;
 }
 
-.prod-image {
-	float:right;
-	height: 220px;
-	width: 160px;
-	border: 1px #ccc solid;
-	margin-right: 20px;
-}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/***************** product modules ***********/
 #frm-mdl-material > table {
 	float: left;
 }	
 
+
+
+
+input[type=checkbox].toggle {
+	margin: 10px 0;
+}
+
+.dropbox-container {
+	float:right;
+	margin-top: 20px;
+	width: 200px;
+}
+
+#dropbox.prod-image {
+	
+	height: 225px;
+	width: 200px;
+	/*
+	border: 1px #ccc solid;
+	margin-right: 20px;
+	*/
+	
+	
+}
+
 .prod-image_after {
-	clear: both;
+	clear: both;	
+}
+
+
+/*-------------------------
+	Dropbox Element
+--------------------------*/
+
+#dropbox{
+/*	background: url('../images/background_tile_3.jpg'); */
+
+/*	border-radius:3px; */
+	position: relative;
+/*	margin:80px auto 90px; */
+    margin: 0;
+	height: 225px;
+    width: 225px;
+    max-height: 225px;
+    max-width: 225px;
+	overflow: hidden;
+/*	padding-bottom: 40px; 
+    width: 990px; */
+    border: 1px dashed #ccc;
+   
+/*	box-shadow:0 0 4px rgba(0,0,0,0.3) inset,0 -3px 2px rgba(0,0,0,0.1); */
+
+	 -moz-transition: all 300ms ease-in-out;
+	-webkit-transition: all 300ms ease-in-out;
+	transition: all 300ms ease-in-out;
+}
+
+#dropbox:hover {
+    
+    background-color:#fff;
+  
+    
+}
+
+
+#dropbox .message{
+	font-size: 11px;
+    text-align: center;
+    padding-top:160px;
+    display: block;
+}
+
+#dropbox .message i{
+	color:#ccc;
+	font-size:10px;
+}
+
+#dropbox:before{
+/*	border-radius:3px 3px 0 0; */
+}
+
+/*-------------------------
+	Image Previews
+--------------------------*/
+
+#dropbox .preview{
+	width:190px;
+	height: 215px;
+	float:left;
+/*	margin: 55px 0 0 60px; */
+	margin:5px;
+	position: relative;
+	text-align: center;
+}
+
+#dropbox .preview img{
+	max-width: 180px;
+	max-height:195px;
+	border:3px solid #fff;
+	display: block;
+
+	box-shadow:0 0 2px #000;
+}
+
+#dropbox .imageHolder{
+	display: inline-block;
+	position:relative;
+}
+
+#dropbox .uploaded{
+	position: absolute;
+	top:0;
+	left:0;
+	height:100%;
+	width:100%;
+	background: url('../images/done.png') no-repeat center center rgba(255,255,255,0.21);
+	display: none;
+	opacity: 0.5;
+}
+
+#dropbox .preview.done .uploaded{
+	display: block;
+}
+
+/*-------------------------
+	Progress Bars
+--------------------------*/
+
+#dropbox .progressHolder{
+	position: absolute;
+/*	background-color:#252f38; */
+	background-color: #EDEFF4;
+	height:12px;
+	width:100%;
+	left:0;
+	bottom: 0;
+
+	box-shadow:0 0 2px #000;
+}
+
+#dropbox .progress{
+	background-color:#2586d0;
+	position: absolute;
+	height:100%;
+	left:0;
+	width:0;
+
+	box-shadow: 0 0 1px rgba(255, 255, 255, 0.4) inset;
+
+	-moz-transition:0.25s;
+	-webkit-transition:0.25s;
+	-o-transition:0.25s;
+	transition:0.25s;
+    
+    /* overide bootstrap.css*/
+    background-image:none;
+    border-radius: 0;
+}
+
+#dropbox .preview.done .progress{
+	width:100% !important;
+}
+
+
+#file_upload {
+    margin-top:5px;
+}
+
+.lbl-file_upload {
+	cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.visuallyhidden { 
+  position: absolute; 
+  overflow: hidden; 
+  clip: rect(0 0 0 0); 
+  height: 1px; width: 1px; 
+  margin: -1px; padding: 0; border: 0; 
+}
+
+.ui-autocomplete {
+    max-height: 200px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+    border:1px solid #222;
+    position:absolute;
+	z-index: 1050;
+}
+
+.ui-autocomplete {
+    cursor: default;
+}
+
+.ui-menu {
+    list-style: none outside none;
+}
+
+.ui-menu .ui-menu-item a {
+    display: block;
+    font-weight: normal;
+    line-height: 1.5;
+    padding: 2px 0.4em;
+    text-decoration: none;
+}
+.ui-widget-content a {
+    color: #555555;
+}
+
+
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
+    background-color: #DADADA;
+    border: 0 solid #999999;
+    color: #212121;
+    font-weight: normal;
 }

@@ -3,10 +3,10 @@ var rootpath = root ;
 var apiPath = rootpath +'/api';
 
 $(document).ready(function() {
-	//ComputeItemAmount();
-  	
-	//$('.table-model input[type=checkbox]').css('border','1px red solid').val(1);
 	
+
+	//$('#h-main-logo > img').attr('src','../images/mfi-logo.jpg');
+	//$('.comp-name > h1').text('Modularfusion Inc');
 	
 	
 	//$(".table-model .currency").maskMoney();
@@ -30,7 +30,7 @@ $(document).ready(function() {
 		
 		//console.log($(this).data('input'));
 		var i = $(this).data('input');
-		
+		console.log(i);
 		if($(this).attr('checked')){
     		$('#'+ i).val(1);
     	} else {
@@ -477,7 +477,7 @@ function addTableData2(data) {
 				var i = len - 1;	
 				var cls = $("td:eq("+ i +")" ,sr).attr('class');
 				var x;
-				//console.log(cls);
+				console.log(cls);
 
 
 				if(cls==='currency'){
@@ -770,6 +770,39 @@ function set_alert(type, header, text) {
 		$('.form-alert').html(alert_row);
 	} else {
 		$('#frm-alert').html(alert_row);
+	}
+}
+
+function set_alert2(type, header, text) {
+	
+	type = isset(type) ? type : 'info';
+	header = isset(header) ? header : 'Heads up!';
+	text = isset(text) ? text : 'This alert needs your attention, but it\'s not super important.';
+	
+	var alert_row = '<div class="alert alert-'+ type +'">';
+		alert_row += '<button class="close" data-dismiss="alert" type="button">×</button>';
+		alert_row += '<strong>'+ header +' </strong>' + text;
+		alert_row += '</div>';
+	
+
+	if($('#frm-alert').length == '0'){
+		$('.form-alert').html(alert_row);
+	
+		setTimeout(function(){
+			$('.form-alert').fadeOut(3000, function(){
+				$( this ).html('');
+				$( this ).removeAttr('style');
+			});
+		}, 5000);
+		
+	} else {
+		$('#frm-alert').html(alert_row);
+		setTimeout(function(){
+			$('#form-alert').fadeOut(3000, function(){
+				$( this ).html('');
+				$( this ).removeAttr('style');
+			});
+		}, 5000);
 	}
 }
 
@@ -1247,10 +1280,20 @@ function updateTableData3(data) {
 				len--;
 			} else {	
 				var i = len - 1;
+				var n;
 				
-				$('td:eq('+ i +')', existing_tr).text(data[key]);
-				if($('td:eq('+ len +')', existing_tr).hasClass('currency')){
-					$('td:eq('+ len +')', existing_tr).toCurrency();
+				//console.log($('td:eq('+ len +')', existing_tr));
+				//console.log($('td:eq('+ i +')', existing_tr));
+
+
+				if($('td:eq('+ i +')', existing_tr).hasClass('currency')){
+					n = accounting.formatNumber(data[key], 2, ",", ".");
+					$('td:eq('+ i +')', existing_tr).text(n);
+				} else if($('td:eq('+ i +')', existing_tr).hasClass('number')) {
+					n = accounting.formatNumber(data[key], 0, ",");
+					$('td:eq('+ i +')', existing_tr).text(n);
+				} else {
+					$('td:eq('+ i +')', existing_tr).text(data[key]);
 				}	
 			}
 			len++;		

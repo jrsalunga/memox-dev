@@ -1,7 +1,7 @@
 <?php
 include_once('../../lib/initialize.php');
 
-$apvhdr = new Apvdtl;
+$apvhdr = new Prodprop;
 
 
 

@@ -1,3 +1,4 @@
+
 var Brand = Backbone.Model.extend({
 	urlRoot: "../api/s/brand",
 	defaults: {
@@ -45,6 +46,88 @@ var Model = Backbone.Model.extend({
 	}
 });
 var model = new Model();
+
+var Product = Backbone.Model.extend({
+		urlRoot: "../api/t/product",
+		initialize: function(){
+			// on init set id for apvdtls
+
+			this.set({id: guid()}, {silent:true});
+		},
+		defaults: {
+			code: '',
+			descriptor: '',
+			typeid: '',
+			brandid: '',
+			modelid: '',
+			prodcatid: '',
+			serialized: 0,
+			uom: '',
+			longdesc: '',
+			picfile: '',
+			onhand: '',
+			minlevel: 0,
+			maxlevel: 0,
+			reorderqty: 0,
+			unitprice: 0.00,
+			floorprice: 0.00,
+			avecost: 0.00
+		}, 
+		validation: {
+			code: {
+		    	required: true,
+				msg: 'Please enter a value'
+		   	}	
+		},
+		unset: function(attr, options) {
+		  (options || (options = {})).unset = true;
+		  return this.set(attr, null, options);
+		},
+		blank: function(){
+			this.clear();
+			return this.defaults;
+		}
+	});
+	var product = new Product();
+	//apvhdr.blank();
+
+
+var Prodprop = Backbone.Model.extend({
+	urlRoot: '../api/s/prodprop',
+	defaults: {
+		productid: '',
+		propertyid: '',
+		descriptor: ''
+	},
+	unset: function(attr, options) {
+	  (options || (options = {})).unset = true;
+	  return this.set(attr, null, options);
+	},
+	blank: function(){
+		this.clear();
+		return this.defaults;
+	}
+});
+var prodprop = new Prodprop();
+
+
+var Modelprop = Backbone.Model.extend({
+	urlRoot: '../api/s/modelprop',
+	defaults: {
+		modelid: '',
+		propertyid: '',
+		descriptor: ''
+	},
+	unset: function(attr, options) {
+	  (options || (options = {})).unset = true;
+	  return this.set(attr, null, options);
+	},
+	blank: function(){
+		this.clear();
+		return this.defaults;
+	}
+});
+var modelprop = new Modelprop();
 
 
 var Propcat = Backbone.Model.extend({
@@ -122,6 +205,7 @@ var Itemcat = Backbone.Model.extend({
 var itemcat = new Itemcat();
 //var itemcat = new Itemcat({code: '001', descriptor: 'Ply Board'});
 
+//APV Item
 var Item = Backbone.Model.extend({
 	urlRoot: "../api/t/item",
 	defaults: {
@@ -144,7 +228,6 @@ var Item = Backbone.Model.extend({
 		return this.defaults;
 	}
 });
-
 var item = new Item(); 
 
 
@@ -172,30 +255,6 @@ var Prodcat = Backbone.Model.extend({
 });
 var prodcat = new Prodcat();
 
-var Product = Backbone.Model.extend({
-	urlRoot: "../api/t/product",
-	defaults: {
-		code: '',
-		descriptor: '',
-		typeid: '',
-		type: '',
-		matcatid: '',
-		uom: '',
-		longdesc: '',
-		onhand: '',
-		minlevel: '',
-		maxlevel: '',
-		unitprice: '',
-		reorderqty: '',
-		floorprice: '',
-		avecost: ''
-	},
-	blank: function(){
-		this.clear();
-		return this.defaults;
-	}
-})
-var product = new Product();
 
 
 var Supplier = Backbone.Model.extend({
@@ -260,6 +319,24 @@ var Bank = Backbone.Model.extend({
 	}
 });
 var bank = new Bank();
+
+
+
+var ProdpropProperty = Backbone.Model.extend({
+	urlRoot: '../api/t/prodpropproperty',
+	defaults: {
+		
+	},
+	unset: function(attr, options) {
+	  (options || (options = {})).unset = true;
+	  return this.set(attr, null, options);
+	},
+	blank: function(){
+		this.clear();
+		return this.defaults;
+	}
+});
+var prodpropProperty = new ProdpropProperty();
 
 
 

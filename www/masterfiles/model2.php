@@ -1,4 +1,5 @@
-<?php
+﻿<?php
+
 require_once('../../lib/initialize.php');
 ?>
 <!DOCTYPE HTML>
@@ -7,12 +8,13 @@ require_once('../../lib/initialize.php');
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="chrome=1">
 
-<title>Modularfusion Inc - Supplier</title>
+<title>MemoXpress Inc - Model</title>
 <link rel="shortcut icon" type="image/x-icon" href="../images/memoxpress-favicon.jpg" />
 
 <link rel="stylesheet" href="../css/bootstrap.css">
 <link rel="stylesheet" href="../css/styles-ui.css">
 <link rel="stylesheet" href="../css/main-ui.css">
+
 
 
 <script src="../js/vendors/jquery-1.10.1.min.js"></script>
@@ -33,14 +35,17 @@ require_once('../../lib/initialize.php');
 <script src="../js/vendors/NumberFormat154.js"></script>
 <script src="../js/vendors/moment.2.1.0-min.js"></script>
 <script src="../js/vendors/accounting.js"></script>
+<script src="../js/vendors/jquery.filedrop.js"></script>
+<script src="../js/vendors/upload-image.js"></script>
 <script src="../js/common.js"></script>
 <script src="../js/app-menu.js"></script>
 <script src="../js/main-ui.js"></script>
 <script src="../js/app-ui.js"></script>
 <script src="../js/category.js"></script>
 <script src="../js/models.js"></script>
+<script src="../js/collections.js"></script>
 <script src="../js/views.js"></script>
-<script src="../js/apvhdr.js"></script>
+<script src="../js/model.js"></script>
 
 <!--
 <script src="../js/app-menu.js"></script>
@@ -48,91 +53,56 @@ require_once('../../lib/initialize.php');
 -->
 
 
-<script type="text/template" id="modal-apvhdr-tpl">
-	<form id="frm-mdl-apvhdr" name="frm-mdl-apvhdr" class="table-model" data-table="apvhdr" action="" method="post">	
-    	<table cellpadding="5px" cellspacing="0" border="0" >
+<script type="text/template" id="modal-model-tpl">
+	<form id="frm-mdl-model" name="frm-mdl-model" class="table-model" data-table="model" action="" method="post" style="margin-top: 20px;">	
+    	<table cellpadding="5px" cellspacing="0" border="0">
         	<tbody>
             	<tr>
-                	<td><label for="refno">Reference No: </label></td>
-                    <td><input type="text" name="refno" id="refno" maxlength="20" required></td>
-					
-					<td><label for="date">Date:</label></td>
-                    <td><input type="date" name="date" id="date"  placeholder="yyyy-mm-dd"></td>
+                	<td><label for="code">Code: </label></td>
+                    <td><input type="text" name="code" id="code" maxlength="20" required></td>
             	</tr>
                 <tr>
-                	<td><label for="supplierid">Supplier:</label></td>
+                	<td><label for="descriptor">Descriptor:</label></td>
+                    <td><input type="text" name="descriptor" id="descriptor" maxlength="50" class="m-input" </td>
+         		</tr>
+				<tr>
+                    <td><label for="matcatid">Brand:</label></td>
                     <td>
-						<select name="supplierid" id="supplierid">
+                        <!--
+                        <input type="text" name="itemcatid" id="itemcatid" maxlength="50" class="m-input" >
+                        -->
+                        <select name="brandid" id="brandid" class="m-input">
                         <?php
                            
                             
-                            $suppliers = Supplier::find_all();
+                            $matcats = Brand::find_all();
                                                 
-                            foreach( $suppliers as  $supplier) {                        
-                               echo "<option value=\"".strtolower($supplier->id)."\">". uc_first($supplier->descriptor) ."</option>";
+                            foreach( $matcats as  $matcat) {                        
+                               echo "<option value=\"".strtolower($matcat->id)."\">". $matcat->descriptor ."</option>";
                             }  
                             
                         ?>
 
                         </select>
-					</td>
-					
-					<td><label for="supprefno">Supplier Ref No:</label></td>
-                    <td><input type="text" name="supprefno" id="supprefno" ></td>
-         		</tr>
-				<tr>
-                	<td><label for="porefno">PO Ref No:</label></td>
-                    <td><input type="text" name="porefno" id="porefno"></td>
-					
-					<td><label for="terms">Terms:</label></td>
-                    <td><input type="text" name="terms" id="terms"></td>
-         		</tr>
-				<tr>
-                	<td><label for="totamount">Total Amount:</label></td>
-                    <td><input type="text" name="totamount" id="totamount" class="currency"></td>
-					
-					<td><label for="balance">Balance:</label></td>
-                    <td><input type="text" name="balance" id="balance" class="currency" ></td>
-         		</tr>
-				<!--
-				<tr>
-                	<td><label for="totline">Total Line:</label></td>
-                    <td><input type="text" name="totline" id="totline" class="currency"></td>
-					
-					<td><label for="id">ID:</label></td>
-                    <td><input type="text" name="id" id="id"  ></td>
-         		</tr>
-				<tr>
-                	<td>&nbsp;</td>
-                    <td><input type="text" name="posted" id="posted"  ></td>
-					
-					<td><label for="mode">Mode:</label></td>
-                    <td><input type="text" name="mode" id="mode"  ></td>
-         		</tr>
-				-->
+                    </td>
+                </tr>
         	</tbody>
     	</table>
  	</form>
 </script>
 
 
-<script type="text/template" id="modal-apvdtls-tpl">
+
+<script type="text/template" id="modal-modelprops-tpl">
 	<table class="modal-tb-detail" cellpadding="0" cellspacing="0" width="100%" border="0">
 	<thead>
-		<tr><th>Item</th><th>Amount</th></tr>
-	</thead>
+		<tr>
+			<th>Category</th>
+			<th>Property</th>
+			<th>Value
 	<tbody class="items-tbody">
 	
 	</tbody>
-	<tfoot>
-	<tr><td colspan="2">
-	
-	</td>
-	<td>  
-		
-	</td></tr>
-	
-	</tfoot>
 	</table>
 </script>
 
@@ -140,12 +110,15 @@ require_once('../../lib/initialize.php');
 <script type="text/template" id="modal-items-tpl">
 <form class="modal-table-detail">
 	<input type="hidden" name="id" id="id">
-	<input type="hidden" name="itemid" id="itemid">
-	<input type="hidden" name="apvhdrid" id="apvhdrid">
-	<input type="text" class="search-detail">
-	<input type="number" name="amount" id="amount">
+	<input type="hidden" name="propertyid" id="propertyid">
+	
+	
+	<span class="search-detail-icon"></span>
+	<input type="text" class="search-detail" placeholder="Search property" >
+	
+	<input type="text" name="descriptor" id="descriptor" placeholder="Property value">
 	<button type="button" id="mdl-detail-save-item" class="btn btn-primary btn-sm">Add</button>
-	<button type="button" id="mdl-detail-cancel-item" class="btn btn-default btn-sm">Cancel</button>
+<!--	<button type="button" id="mdl-detail-cancel-item" class="btn btn-default btn-sm">Cancel</button>  -->
 </form>
 </script>
 
@@ -164,7 +137,7 @@ function itemSearch(){
             source: function( request, response ) {
                 $.ajax({
 					type: 'GET',
-					url: "../api/search/item",
+					url: "../api/search/vproperty",
                     dataType: "json",
                     data: {
                         maxRows: 25,
@@ -174,7 +147,7 @@ function itemSearch(){
                         response( $.map( data, function( item ) {
                             return {
                                 label: item.code + ' - ' + item.descriptor,
-                                value: item.code,
+                                value: item.descriptor,
 								id: item.id
                             }
                         }));
@@ -186,16 +159,22 @@ function itemSearch(){
 				//console.log(ui);
                 log( ui.item ? "Selected: " + ui.item.label : "Nothing selected, input was " + this.value);
 	
-				$("#itemid").val(ui.item.id); /* set the selected id */
+				$("#propertyid").val(ui.item.id); /* set the selected id */
+				$(".search-detail-icon").addClass("success");
 				
             },
             open: function() {
                 $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
-				$("#itemid").val('');  /* remove the id when change item */
+				$("#propertyid").val('');  /* remove the id when change item */
+				$(".search-detail-icon").removeClass("success");
             },
             close: function() {
                 $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
-            }
+            },
+			messages: {
+				noResults: '',
+				results: function() {}
+			}
 			
        });
 }
@@ -204,41 +183,53 @@ $(document).ready(function(e) {
 	
 	
 	
-	var appRouter = new Router();
+	//$('#mdl-frm-product').modal('show');
+	//$(".modal .modal-title").text('Add Product');
+	
+	// $('#productTab a:last').tab('show')
+	
+	//var appRouter = new Router();
 	var appView = new AppView({model: app});
 	
-	var apvhdrView = new ParentChildModal({model: apvhdr, collection: apvdtls});
 	
+	//var productView = new ParentChildModal({model: product, collection: prodprops});
+	var modelView = new ParentChildModal({model: model, collection: modelprops});
+	console.log(modelView.el);
 	
-	var detailView = new ModalDetailView({model: apvhdr, collection: apvdtls});
+
+	
+	//var detailView = new ModalDetailView({model: product, collection: prodprops});
+	var detailView = new ModalDetailView({model: model, collection: modelprops});
 	detailView.render();
 
-	var formDetailView = new FormDetailView({model: apvdtl, collection: apvdtls});
+	//var formDetailView = new FormDetailView({model: prodprop, collection: prodprops});
+	var formDetailView = new FormDetailView({model: modelprop, collection: modelprops});
 	formDetailView.render();
 	
 	
-	var apvhdrDataGridView = new DataGridView({model: apvhdr, collection: apvdtls});
+	//var productDataGridView = new DataGridView({model: product, collection: prodprops});
+	var productDataGridView = new DataGridView({model: model, collection: modelprops});
 	
-	
-	
-	
-	$('#tlbr-new').on('click', function(){
-		//$(".modal .modal-title").text('Add');
-		apvhdrView.modalTitle.text('Add Record');
-		apvhdrView.clearForm();
-		    btn = '<button type="button" id="modal-btn-save" class="btn btn-primary model-btn-save" data-dismiss="modal" disabled>Save</button>';
-        btn += '<button type="button" id="modal-btn-save-blank" class="btn btn-primary model-btn-save-blank" disabled>Save &amp; Blank</button>';
-        btn += '<button type="button" id="modal-btn-cancel" class="btn btn-default model-btn-cancel" data-dismiss="modal">Cancel</button>';
-        $('.modal-footer').html(btn); 
-		
-		$('#mdl-frm-apvhdr').modal('show'); 
-	});
 	
 	
 
+	$('#tlbr-new').on('click', function(){
+		modelView.modalTitle.text('Add Record');
+		modelView.clearForm();
+		
+		btn = '<button type="button" id="modal-btn-save" class="btn btn-primary model-btn-save" data-dismiss="modal" disabled>Save</button>';
+        btn += '<button type="button" id="modal-btn-save-blank" class="btn btn-primary model-btn-save-blank" disabled>Save &amp; Blank</button>';
+        btn += '<button type="button" id="modal-btn-cancel" class="btn btn-default model-btn-cancel" data-dismiss="modal">Cancel</button>';
+        $('.modal-footer').html(btn);  
+	});
+
 	Backbone.history.start();
 	
-	//$('#mdl-frm-apvhdr').modal('show');
+	
+	
+	
+	
+	
 	itemSearch();
 	
 	
@@ -246,57 +237,36 @@ $(document).ready(function(e) {
         "sPaginationType": "full_numbers",
 		"bProcessing": true,
         "bServerSide": true,
-        "sAjaxSource": "../api/datatables/v/apvhdr",
+        "sAjaxSource": "../api/datatables/v/model",
 	//	"sAjaxSource": "../www/test/datatable_test.php"
 		"fnHeaderCallback":  function( nHead, aData, iStart, iEnd, aiDisplay ) { 
 				
-				//var title = [,"Code","Descriptor"];
-				//console.log(title.length);
-				for(i=0; i<=$('th', nHead).length-1; i++) {
-					$('th', nHead).removeAttr('style');
-				}		
-				
+				//for(i=0; i<=$('th', nHead).length-1; i++) {
+				//	$('th', nHead).removeAttr('style');
+				//}		
 			},
 		"aoColumns": [
 			//{   "sTitle": "<input type='checkbox' class='select-all'></input>","mDataProp": null, "sWidth": "20px", "sDefaultContent": "<input type='checkbox' ></input>", "bSortable": false},
-            { "mData": "refno",  "sTitle": "Ref No",
-				"mRender": function ( data, type, apvhdr ) {
-							if(apvhdr.posted==1){
-								return data;
-							} else {
-								return data+'<div class="tb-data-action"><a class="row-post" href="#">&nbsp;</a><a class="row-delete" href="#">&nbsp;</a><a class="row-edit" href="#">&nbsp;</a></div>';
-							}
+            { "mData": "code",  "sTitle": "Code",
+				"mRender": function ( data, type, full ) {
+							return data+'<div class="tb-data-action"><a class="row-delete" href="#">&nbsp;</a><a class="row-edit" href="#">&nbsp;</a></div>';
 				}
 			},
-            { "mData": "date",  "sTitle": "Date" },
-			{ "mData": "supplier",  "sTitle": "Supplier" },
-			{ "mData": "supprefno",  "sTitle": "Supplier Ref No" },
-			{ "mData": "porefno",  "sTitle": "PO Ref No" },
-			{ "mData": "terms",  "sTitle": "Terms" },
-			{ "mData": "totamount",  "sTitle": "Total Amount" },
-			{ "mData": "balance",  "sTitle": "Balance" },
-			{ "mData": "posted",  "sTitle": "Posted" }
+            { "mData": "descriptor",  "sTitle": "Descriptor" },
+            { "mData": "brand",  "sTitle": "Brand" }
 			],
 		"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-		
-			
-		
-      		$(nRow).attr("data-id", aData.id);
-			$(nRow).attr("id", aData.id);
-			
-			$('td:eq(6), td:eq(7)', nRow).addClass("currency").each(function(){
-                    $(this).toCurrency();
-                });
-				
-		$('td:eq(5), td:eq(8)', nRow).addClass("number");
-	
-      }
+
+	            $(nRow).attr("data-id", aData.id);
+				$(nRow).attr("id", aData.id);
+        	}
     });
 	
+		
 	
-	
-	
-	
+	$("#tlbr-new").on('click', function(){
+			$("#mdl-frm-model .modal-title").text('Add Model');
+	});
 	
 	$("#tlbr-refresh-datatable").on('click', function(){
 			oTable.fnDraw();
@@ -309,8 +279,17 @@ $(document).ready(function(e) {
 	});
 	
 	
-   
-
+	$(".modal-table-detail #id").bind('DOMSubtreeModified', function() {
+   		//console.log("DOMSubtreeModified");
+		var id = $(".modal-table-detail #id").val();
+		if(id == undefined || id == null || id == '') {
+			
+		} else {
+			
+		}
+ 	});
+	
+	
 	
 });
 </script>
@@ -351,33 +330,33 @@ $(document).ready(function(e) {
 	  	
 		<div id="nav-container">
         	<nav class="main-nav">
-            	<div id="menu0" class="nav deactive">
+            	<div id="menu0" class="nav active">
            			<div class="bb">
             			<div class="Sj"></div>
            				<div class="yb"></div>
             			<div class="kk">Masterfiles</div>
             		</div>
                     <ul class="fd">
-                        <li><a href="../masterfiles/brand">Brands</a></li>
-                        <li><a href="../masterfiles/model">Models</a></li>
-                    	<li><a href="../masterfiles/propcat">Properties Category</a></li>
-                        <li><a href="../masterfiles/property">Properties</a></li>
-                        <li><a href="../masterfiles/prodcat">Products Category</a></li>
-                        <li><a href="../masterfiles/product">Products</a></li>
-                        <li><a href="../masterfiles/itemcat">Items Category</a></li>
-                        <li><a href="../masterfiles/item">Item</a></li>
-                        <li><a href="../masterfiles/supplier">Supplier</a></li>
-                        <li><a href="../masterfiles/bank">Bank</a></li>
+                        <li><a href="brand">Brands</a></li>
+                        <li class="active"><a href="model">Models</a></li>
+                        <li><a href="propcat">Properties Category</a></li>
+                        <li><a href="property">Properties</a></li>
+                        <li><a href="prodcat">Products Category</a></li>
+                        <li><a href="product">Products</a></li>
+                        <li><a href="itemcat">APV Items Category</a></li>
+                        <li><a href="item">APV Items</a></li>
+                        <li><a href="supplier">Suppliers</a></li>
+                        <li><a href="bank">Banks</a></li>
                     </ul>
             	</div>
-                <div id="menu1" class="nav active">
+                <div id="menu1" class="nav deactive">
                		<div class="bb">
                         <div class="Sj"></div>
                         <div class="yb"></div>
                         <div class="kk">Transactions</div>
                		</div>
                     <ul class="fd">
-                   		<li class="active"><a href="apvhdr">Accounts Payable</a></li>
+                   		<li><a href="../transactions/apvhdr">Accounts Payable</a></li>
                         <li><a href="../masterfiles/check.php">check</a></li>
                         <li><a href="../masterfiles/invoice.php">invoice</a></li>
                     </ul>
@@ -417,12 +396,12 @@ $(document).ready(function(e) {
 			
 			<header>
             	<div class="mod-name">
-                	<h1>Accounts Payable</h1>
+                	<h1>Model</h1>
                     <nav id="breadcrum">
 						<ul>
 							<li><a href="../">Home</a></li>
-							<li><a href="../transacrions">Masterfiles</a></li>
-							<li>Accounts Payable</li>
+							<li><a href="../../masterfiles">Masterfiles</a></li>
+							<li>Model</li>
 						</ul>
                     </nav>
                 </div>
@@ -474,7 +453,7 @@ $(document).ready(function(e) {
                     	<button id="tlbr-new" class="toolbar-minibutton" data-target="#mdl-frm-itemcat" data-toggle="modal" type="button" title="Create New Record">New</button>
                         <button id="tlbr-refresh-datatable" class="toolbar-minibutton" type="button" title="Refresh Datatable">Refresh</button>
                         -->
-                        <button id="tlbr-new" class="toolbar-minibutton" data-target="#mdl-frm-itemcat" data-toggle="modal" type="button" title="Create New Record"><div class="tlbr-new">&nbsp;</div></button>
+                        <button id="tlbr-new" class="toolbar-minibutton" data-target="#mdl-frm-model" data-toggle="modal" type="button" title="Create New Record"><div class="tlbr-new">&nbsp;</div></button>
                         <button id="tlbr-refresh-datatable" class="toolbar-minibutton" type="button" title="Refresh Datatable"><div class="tlbr-refresh">&nbsp;</div></button>
                         
                         <!--
@@ -522,8 +501,7 @@ $(document).ready(function(e) {
                 </form>
                 </div>
                 <!-------------- end from-container ---------------------------->	
-                 <div class="parent-container">
-                 </div>
+                
                 
                 <div class="tb-data-container">
                 	<table class="tb-data" cellpadding="0" cellspacing="0" width="100%">
@@ -566,7 +544,7 @@ $(document).ready(function(e) {
 </div>
 
 
- <div class="modal fade" id="mdl-frm-apvhdr" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+ <div class="modal fade" id="mdl-frm-model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -574,13 +552,32 @@ $(document).ready(function(e) {
           <h4 class="modal-title"></h4>
         </div>
         <div class="modal-body">
-        	<div class="modal-parent-child">
-                <div class="modal-body-parent">
+			<div class="modal-parent-child">
+            
+            	<ul class="nav nav-tabs" id="modelTab">
+                  <li class="active"><a href="#tab-general" data-toggle="tab">General</a></li>
+                  <li><a href="#tab-property" data-toggle="tab">Properties</a></li>                 
+                </ul>
+                
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-general">
+                        <div class="modal-body-parent">
+                		</div>
+                    </div>
+                    <div class="tab-pane" id="tab-property">
+                    	
+                        <div class="modal-body-child" style="margin-top: 20px;">
+                        </div>
+                        <div class="modal-body-item">
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-inventory">
+                        
+                    </div>
                 </div>
-                <div class="modal-body-child">
-                </div>
-              	<div class="modal-body-item">
-                </div>
+                
+                
+                
            	</div>
         </div>
         <div class="modal-footer">

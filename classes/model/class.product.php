@@ -3,10 +3,10 @@
 // probably smart to require it before we start.
 require_once(ROOT.DS.'classes'.DS.'database.php');
 
-class Material extends DatabaseObject{
+class Product extends DatabaseObject{
 	
-	protected static $table_name="material";
-	protected static $db_fields = array('id', 'code' ,'descriptor' ,'typeid' ,'matcatid' ,'uom' ,'longdesc' ,'picfile' ,'onhand' ,'minlevel' ,'maxlevel' ,'reorderqty' ,'unitprice' ,'floorprice' ,'avecost' );
+	protected static $table_name="product";
+	protected static $db_fields = array('id', 'code' ,'descriptor' ,'typeid' ,'brandid' ,'modelid' ,'prodcatid' ,'serialized' ,'uom' ,'longdesc' ,'picfile' ,'onhand' ,'minlevel' ,'maxlevel' ,'reorderqty' ,'unitprice' ,'floorprice' ,'avecost' );
 	
 	/*
 	* Database related fields
@@ -15,7 +15,10 @@ class Material extends DatabaseObject{
 	public $code;
 	public $descriptor;
 	public $typeid;
-	public $matcatid;
+	public $brandid;
+	public $modelid;
+	public $prodcatid;
+	public $serialized;
 	public $uom;
 	public $longdesc;
 	public $picfile;

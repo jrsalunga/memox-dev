@@ -45,6 +45,7 @@ var ModalBodyView = Backbone.View.extend({
     	'blur input': 'checkValidity',
     	//'blur input': 'updateModel', kelangan mo pa ito gawin about validationError
     	'change select': 'checkValidity',
+    	'keyup [required]': 'checkValidity',
     	'blur textarea': 'checkValidity'
     },
     render: function() {
@@ -79,17 +80,17 @@ var ModalBodyView = Backbone.View.extend({
 			this.model.save({},{
 		  		success: function(model, respone){
 		  			if(respone.status==='error'){
-		  				set_alert(respone.status, 'Oh snap!', respone.message);
+		  				set_alert2(respone.status, 'Oh snap!', respone.message);
 		  			} else if(respone.status==='warning'){
-		  				set_alert(respone.status, 'Warning!', respone.message);
+		  				set_alert2(respone.status, 'Warning!', respone.message);
 		  			} else {
 		  				if(isnew){
 		  					console.log(respone);
 		  					addTableData2(respone);
-							set_alert('success','Well done!', 'Success on saving!');
+							set_alert2('success','Well done!', 'Success on saving!');
 						} else {
 							updateTableData3(respone)
-							set_alert('success','Yeay!', 'Success on updating!');
+							set_alert2('success','Yeay!', 'Success on updating!');
 						}
 		  			}
 
@@ -384,6 +385,229 @@ var BankModal = ModalBodyView.extend({
     	this.model.on('validated:invalid', this.invalid, this);
 	}
 });
+
+
+
+
+
+
+
+
+
+
+
+//////////////// from model.js
+
+var ModelpropView = Backbone.View.extend({
+		tagName: 'tr',
+		initialize: function(){
+
+			this.model.on('remove', this.removeMe, this);
+			this.model.on('destroy', this.render, this);
+			this.model.on('change', this.render, this);
+			
+			this.template = _.template('<td> <%=category%> '+
+				'<div class="tb-data-action" data-property="<%=property%>">'+
+				'<a class="row-delete" data-id="" href="#">&nbsp;</a>'+
+				'<a class="row-edit" data-id="" href="#">&nbsp;</a>'+
+				'</div></td>'+
+				'<td> <%=property%> </td>' +
+				'<td> <%=value%> </td>');
+		},
+		events: {
+			'dblclick td:first-of-type' : "clickMe"
+			//'click .row-edit': "editMe"
+			//'click .row-delete': "removeMe"
+		},
+		render: function(){			
+			var that = this;
+			//item.url = '../api/s/item/'+  this.model.get('itemid');
+
+
+			property.set({id: this.model.get('propertyid')});
+			property.fetch({
+				success: function(model, respone){
+					var data = {
+		                "category": model.get('propcat'),
+		                "property": model.get('descriptor'),
+		                "value": that.model.get('descriptor') //or code
+		            }
+
+		            that.$el.html(that.template(data));
+				}
+			});
+			return this;
+		},
+		clickMe: function(e){
+			console.log("dsfsafsdadfafafa");
+		},
+		removeMe: function(){
+
+			this.$el.remove();
+			removedModel.push(this.model);
+		},
+		editMe: function(e){
+			e.preventDefault();
+			$("#mdl-detail-save-item").text('Save Changes');
+
+			this.index;
+			//var index = this.collection.indexOf(this.model);
+			this.index = $(e.currentTarget).closest('tr').index();
+			//console.log(this.model.toJSON());
+
+			this.renderToForm();
+
+			$('.table-detail .collection-index').val(this.index);
+
+		}
+	});
+
+
+	var ModelpropsView = Backbone.View.extend({
+		el: '.items-tbody',
+		initialize: function(){
+			//console.log(this.collection);
+
+			this.collection.on('reset', this.addAll, this);
+			this.collection.on('add', this.addOne, this);
+		},
+		events: {
+			'click .row-edit': "editMe",
+			'click .row-delete': "removeMe"
+		},
+		render: function(){
+			this.addAll();
+			return this;
+		},
+		addOne: function(modelprop){
+
+			var modelpropView = new ModelpropView({model: modelprop});
+			this.$el.append(modelpropView.render().el);
+			//return this;
+		},
+		addAll: function(){
+			this.collection.forEach(this.addOne, this);
+		},
+		editMe: function(e){
+			e.preventDefault();
+			$("#mdl-detail-save-item").text('Save Changes');
+
+			var idx = $(e.currentTarget).closest('tr').index();
+			var itemName = $(e.currentTarget).parent().data('property');
+			var m = this.collection.at(idx);
+
+			this.renderToForm(m);
+
+			$('.modal-table-detail .search-detail').val(itemName);
+
+		},
+		removeMe: function(e){
+			e.preventDefault();
+			var idx = $(e.currentTarget).closest('tr').index();
+			var m = this.collection.at(idx);
+
+			this.collection.remove(m); // ApvdtlView.removeMe triggered
+		},
+		renderToForm: function(model){
+			var attrs = { }, k;
+	        for(k in model.attributes) {
+	            attrs[k] = model.attributes[k];
+
+	            $('.modal-table-detail #'+k).val(attrs[k])    
+	        }
+		}
+	});
+
+
+///// for the 2nd child in product.js
+var ModelpropView2 = Backbone.View.extend({
+		tagName: 'tr',
+		initialize: function(){
+
+			this.model.on('remove', this.removeMe, this);
+			this.model.on('destroy', this.render, this);
+			this.model.on('change', this.render, this);
+			
+			this.template = _.template('<td> <%=category%> </td>'+
+				//'<div class="tb-data-action" data-property="<%=property%>">'+
+				//'<a class="row-delete" data-id="" href="#">&nbsp;</a>'+
+				//'<a class="row-edit" data-id="" href="#">&nbsp;</a>'+
+				//'</div></td>'+
+				'<td> <%=property%> </td>' +
+				'<td> <%=value%> </td>');
+		},
+		events: {
+			'dblclick td:first-of-type' : "clickMe"
+			//'click .row-edit': "editMe"
+			//'click .row-delete': "removeMe"
+		},
+		render: function(){			
+			var that = this;
+			//item.url = '../api/s/item/'+  this.model.get('itemid');
+
+
+			property.set({id: this.model.get('propertyid')});
+			property.fetch({
+				success: function(model, respone){
+					var data = {
+		                "category": model.get('propcat'),
+		                "property": model.get('descriptor'),
+		                "value": that.model.get('descriptor') //or code
+		            }
+
+		            that.$el.html(that.template(data));
+				}
+			});
+			return this;
+		},
+		clickMe: function(e){
+			console.log("dsfsafsdadfafafa");
+		},
+		removeMe: function(){
+
+			this.$el.remove();
+			removedModel.push(this.model);
+		},
+		editMe: function(e){
+			e.preventDefault();
+			$("#mdl-detail-save-item").text('Save Changes');
+
+			this.index;
+			//var index = this.collection.indexOf(this.model);
+			this.index = $(e.currentTarget).closest('tr').index();
+			//console.log(this.model.toJSON());
+
+			this.renderToForm();
+
+			$('.table-detail .collection-index').val(this.index);
+
+		}
+	})
+
+
+var ModelpropsView2 = Backbone.View.extend({
+		el: '.items-tbody2',
+		initialize: function(){
+			//console.log(this.collection);
+
+			this.collection.on('reset', this.addAll, this);
+			this.collection.on('add', this.addOne, this);
+		},
+		render: function(){
+			this.$el.html('');
+			this.addAll();
+			return this;
+		},
+		addOne: function(modelprop){
+
+			var modelpropView2 = new ModelpropView2({model: modelprop});
+			this.$el.append(modelpropView2.render().el);
+			//return this;
+		},
+		addAll: function(){
+			this.collection.forEach(this.addOne, this);
+		}
+	});
 
 
 

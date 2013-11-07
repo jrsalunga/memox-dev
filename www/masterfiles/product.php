@@ -1,4 +1,5 @@
 <?php
+
 require_once('../../lib/initialize.php');
 ?>
 <!DOCTYPE HTML>
@@ -7,7 +8,7 @@ require_once('../../lib/initialize.php');
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="chrome=1">
 
-<title>MemoXpress Inc - Material</title>
+<title>MemoXpress Inc - Product</title>
 <link rel="shortcut icon" type="image/x-icon" href="../images/memoxpress-favicon.jpg" />
 
 <link rel="stylesheet" href="../css/bootstrap.css">
@@ -16,8 +17,9 @@ require_once('../../lib/initialize.php');
 
 
 <script src="../js/vendors/jquery-1.10.1.min.js"></script>
-<script src="../js/vendors/jquery-ui-1.8.min.js"></script>
+<script src="../js/vendors/jquery-ui-1.10.3.js"></script>
 <!--
+<script src="../js/vendors/jquery-ui-1.10.3.js"></script>
 <script src="../js/vendors/jquery-1.9.1.js"></script>
 <script src="js/vendors/underscore-min.js"></script>
 <script src="js/vendors/backbone-min.js"></script>
@@ -30,13 +32,20 @@ require_once('../../lib/initialize.php');
 <script src="../js/vendors/jquery.dataTables.min.js"></script>
 <script src="../js/vendors/backbone-validation-min.js"></script>
 <script src="../js/vendors/NumberFormat154.js"></script>
+<script src="../js/vendors/moment.2.1.0-min.js"></script>
+<script src="../js/vendors/accounting.js"></script>
+<script src="../js/vendors/jquery.filedrop.js"></script>
+<script src="../js/vendors/upload-image.js"></script>
 <script src="../js/common.js"></script>
 <script src="../js/app-menu.js"></script>
 <script src="../js/main-ui.js"></script>
 <script src="../js/app-ui.js"></script>
 <script src="../js/category.js"></script>
 <script src="../js/models.js"></script>
+<script src="../js/collections.js"></script>
 <script src="../js/views.js"></script>
+<script src="../js/product.js"></script>
+
 <!--
 <script src="../js/app-menu.js"></script>
 
@@ -51,178 +60,239 @@ require_once('../../lib/initialize.php');
 
 
 
-<script type="text/template" id="modal-material-tpl">
-	<form id="frm-mdl-material" name="frm-mdl-material" class="table-model" data-table="material" action="" method="post">	
-    	<table cellpadding="5px" cellspacing="0" border="0">
-        	<tbody>
-            	<tr>
-                	<td><label for="code">Code: </label></td>
-                    <td><input type="text" name="code" id="code" maxlength="20" value="<%= code %>" required></td>
-            	</tr>
-                <tr>
-                	<td><label for="descriptor">Descriptor:</label></td>
-                    <td><input type="text" name="descriptor" id="descriptor" maxlength="50" class="m-input" value="<%= descriptor %>"></td>
-         		</tr>
-                <tr>
-                    <td><label for="type">Type: </label></td>
-                    <td>   
-                        <select name="typeid" id="typeid" class="m-input">
-                            <option value="1">Direct Material</option>
-                            <option value="2">Indirect Material</option>
-                            <option value="3">Service</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="matcatid">Category:</label></td>
-                    <td>
-						<select name="matcatid" id="matcatid" class="m-input">
-                        <?php
-                            $matcats = Matcat::find_all();                   
-                            foreach( $matcats as  $matcat) {                        
-                               echo "<option value=\"".strtolower($matcat->id)."\">". uc_first($matcat->descriptor) ."</option>";
-                            }    
-                        ?>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><label for="uom">UoM: </label></td>
-                    <td><input type="text" name="uom" id="uom" maxlength="20" value="<%= uom %>" ></td>
-                </tr>
-                <tr>
-                    <td><label for="longdesc">Long Desc:</label></td>
-                    <td><textarea id="longdesc" placeholder="Note" name="longdesc" class="m-input"><%= longdesc %></textarea></td>
-                </tr>
-                <tr>
-                    <td><label for="onhand">Onhand: </label></td>
-                    <td><input type="number" name="onhand" id="onhand" maxlength="20" value="<%= onhand %>" class="number" readonly></td>
-                </tr>
-                <tr>
-                    <td><label for="minlevel">Min Level:</label></td>
-                    <td><input type="number" name="minlevel" id="minlevel" class="currency" value="<%= minlevel %>"></td>
-                </tr>
-                <tr>
-                    <td><label for="maxlevel">Max Level: </label></td>
-                    <td><input type="number" name="maxlevel" id="maxlevel" class="currency" value="<%= maxlevel %>"></td>
-                </tr>
-                <tr>
-                    <td><label for="reorderqty">Reorder Qty:</label></td>
-                    <td><input type="number" name="reorderqty" id="reorderqty" class="currency" value="<%= reorderqty %>"></td>
-                </tr>
-				<tr>
-                    <td><label for="unitprice">Unit Price:</label></td>
-                    <td><input type="number" name="unitprice" id="unitprice" class="currency" value="<%= unitprice %>"></td>
-                </tr>
-				<tr>
-                    <td><label for="floorprice">Floor Price:</label></td>
-                    <td><input type="number" name="floorprice" id="floorprice" class="currency" value="<%= floorprice %>"></td>
-                </tr>
-                <tr>
-                    <td><label for="avecost">Ave Cost:</label></td>
-                    <td><input type="number" name="avecost" id="avecost" class="currency" value="<%= avecost %>" ></td>
-                </tr>
-        	</tbody>
-    	</table>
-		<div id="dropbox" class="prod-image">
+<script type="text/template" id="modal-product-tpl">
+	<form id="frm-mdl-product" name="frm-mdl-product" class="table-model" data-table="product" action="" method="post">
 		
-		</div>
-		<div class="prod-image_after">&nbsp;</div>
+		
+		
+				<table cellpadding="5px" cellspacing="0" border="0" style="float: left; margin-top: 20px;">
+					<tbody>
+						<tr>
+							<td><label for="code">Code: </label></td>
+							<td><input type="text" name="code" id="code" maxlength="20" required></td>
+						</tr>
+						<tr>
+							<td><label for="brandid">Brand: </label></td>
+							<td>
+								<select name="brandid" id="brandid">
+								<?php
+									$brands = Brand::find_all();					
+									foreach($brands as  $brand) {                        
+									   echo "<option value=\"".strtolower($brand->id)."\">". $brand->descriptor ."</option>";
+									}
+								?>
+                       			</select>
+							</td>
+						</tr>
+						<tr>
+							<td><label for="modelid">Model: </label></td>
+							<td><select name="modelid" id="modelid"></select></td>
+						</tr>
+						<tr>
+							<td><label for="descriptor">Descriptor: </label></td>
+							<td><input type="text" name="descriptor" id="descriptor" maxlength="50" class="m-input" required></td>
+						</tr>
+						<tr>
+							<td><label for="prodcatid">Category: </label></td>
+							<td>
+								<select name="prodcatid" id="prodcatid">
+								<?php
+									$prodcats = Prodcat::find_all();					
+									foreach($prodcats as  $prodcat) {                        
+									   echo "<option value=\"".strtolower($prodcat->id)."\">". $prodcat->descriptor ."</option>";
+									}
+								?>
+                       			</select>
+							</td>
+						</tr>
+						<tr>
+							<td><label for="typeid">Type: </label></td>
+							<td>
+								<select name="typeid" id="typeid">
+									<option value="1">Product</option>
+									<option value="2">Service</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td><label for="toogle-serialized">Serialized: </label></td>
+							<td>
+								<input id="toogle-serialized" class="toggle" type="checkbox" data-input="serialized">
+								<input id="serialized" type="hidden" value="0" name="serialized">
+							</td>
+						</tr>
+						
+						<tr>
+							<td><label for="onhand">Onhand: </label></td>
+							<td><input type="text" name="onhand" id="onhand" maxlength="15" class="number"></td>
+						</tr>
+						<tr>
+							<td><label for="minlevel">Min Level: </label></td>
+							<td><input type="text" name="minlevel" id="minlevel" maxlength="20" class="number"></td>
+						</tr>
+						<tr>
+							<td><label for="maxlevel">Max Level: </label></td>
+							<td><input type="text" name="maxlevel" id="maxlevel" maxlength="20" class="number"></td>
+						</tr>
+						<tr>
+							<td><label for="reorderqty">Reorder Qty: </label></td>
+							<td><input type="text" name="reorderqty" id="reorderqty" maxlength="20" class="number"></td>
+						</tr>
+						<tr>
+							<td><label for="unitprice">Unit Price: </label></td>
+							<td><input type="text" name="unitprice" id="unitprice" maxlength="20" class="currency"></td>
+						</tr>
+						<tr>
+							<td><label for="floorprice">Floor Price: </label></td>
+							<td><input type="text" name="floorprice" id="floorprice" maxlength="20" class="currency"></td>
+						</tr>
+						<tr>
+							<td><label for="longdesc">Long Description: </label></td>
+							<td><textarea id="longdesc" class="m-input" placeholder="notes" name="longdesc"></textarea></td>
+						</tr>
+						<tr>
+							<!--<td><label for="picfile">Image Filename: </label></td> -->
+							<td><input type="hidden" name="picfile" id="picfile" maxlength="50" class="m-input" ></td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="dropbox-container">
+					<div id="dropbox" class="prod-image">
+						<span class="message">Drop images here to upload. <br />
+						<i>(they will only be visible to you)</i>
+						</span>
+					</div>
+					<label for="file_upload" class="lbl-file_upload">Upload</label> 
+					<input type="file" id="file_upload" name="file_upload" style="display: none" />
+				</div>
+				<div class="prod-image_after">&nbsp;</div>
+				
+		 	
+		
+		
  	</form>
 </script>
 
-<script type="text/template" id="modal-material-readonly-tpl">
-	<form class="table-model-delete">
-    <table cellpadding="5px" cellspacing="0" border="0">
-            <tbody>
-                <tr>
-                    <td><label for="code">Code: </label></td>
-                    <td><input type="text" name="code" id="code" maxlength="20" value="<%= code %>"  readonly></td>
-                </tr>
-                <tr>
-                    <td><label for="descriptor">Descriptor:</label></td>
-                    <td><input type="text" name="descriptor" id="descriptor" maxlength="50" class="m-input" value="<%= descriptor %>" readonly></td>
-                </tr>
-                <tr>
-                    <td><label for="type">Type: </label></td>
-                    <td><input type="text" name="type" id="type" maxlength="20" value="<%= type %>"  readonly>     </td>
-                </tr>
-                <tr>
-                    <td><label for="matcat">Category:</label></td>
-                    <td><input type="text" name="matcat" id="matcat" maxlength="50" class="m-input" value="<%= matcat %>"  readonly></td>
-                </tr>
-                <tr>
-                    <td><label for="uom">UoM: </label></td>
-                    <td><input type="text" name="uom" id="uom" maxlength="20" value="<%= uom %>" readonly></td>
-                </tr>
-                <tr>
-                    <td><label for="longdesc">Long Desc:</label></td>
-                    <td><textarea id="longdesc" placeholder="Note" name="longdesc" class="m-input" readonly><%= longdesc %></textarea></td>
-                </tr>
-                <tr>
-                    <td><label for="onhand">Onhand: </label></td>
-                    <td><input type="number" name="onhand" id="onhand" maxlength="20" value="<%= onhand %>" class="number" readonly></td>
-                </tr>
-                <tr>
-                    <td><label for="minlevel">Min Level:</label></td>
-                    <td><input type="number" name="minlevel" id="minlevel" class="currency" value="<%= minlevel %>" readonly></td>
-                </tr>
-                <tr>
-                    <td><label for="maxlevel">Max Level: </label></td>
-                    <td><input type="number" name="maxlevel" id="maxlevel" class="currency" value="<%= maxlevel %>" readonly></td>
-                </tr>
-                <tr>
-                    <td><label for="reorderqty">Reorder Qty:</label></td>
-                    <td><input type="number" name="reorderqty" id="reorderqty" class="currency" value="<%= reorderqty %>" readonly></td>
-                </tr>
-                <tr>
-                    <td><label for="avecost">Ave Cost:</label></td>
-                    <td><input type="number" name="avecost" id="avecost" class="currency" value="<%= avecost %>" readonly></td>
-                </tr>
-            </tbody>
-        </table>
-    </form>
+
+
+<script type="text/template" id="modal-prodprops-tpl">
+	<table class="modal-tb-detail" cellpadding="0" cellspacing="0" width="100%" border="0">
+	<thead>
+		<tr>
+			<th>Category</th>
+			<th>Property</th>
+			<th>Value
+	<tbody class="items-tbody">
+	
+	</tbody>
+	</table>
 </script>
 
 
 
 
-<script type="text/template" id="menu-tpl">
-	<div class="bb">
-		<div class="Sj"></div>
-		<div class="yb"></div>
-		<div class="kk"><%= name %></div>
-	</div>
-	<ul class="fd">
-		<% _.each(sub, function(element){ %>
-			
-			<li><a href="<%= element.name %>.php" ><%= element.name %></a></li>
-		<% }) %>
-	</ul>
+<script type="text/template" id="modal-items-tpl">
+<form class="modal-table-detail">
+	<input type="hidden" name="id" id="id">
+	<input type="hidden" name="propertyid" id="propertyid">
+	
+	<input type="text" class="search-detail" placeholder="Search property">
+	<input type="text" name="descriptor" id="descriptor" placeholder="Property value">
+	<button type="button" id="mdl-detail-save-item" class="btn btn-primary btn-sm">Add</button>
+<!--	<button type="button" id="mdl-detail-cancel-item" class="btn btn-default btn-sm">Cancel</button>  -->
+</form>
 </script>
-<!-- <li <% if(element.class === 'active') { %>  class="active" <%}  %> ><a href="<%= element.name %>.php" ><%= element.name %></a></li> -->
+
 
 
 <script>
 var oTable;
 
+function log( message ) {
+     //  $( "<div>" ).text( message ).appendTo( "#log" );
+	$("#log").text(message);
+	//$( "#log" ).scrollTop( 0 );
+}
+function itemSearch(){
+	 $(".search-detail").autocomplete({
+            source: function( request, response ) {
+                $.ajax({
+					type: 'GET',
+					url: "../api/search/vproperty",
+                    dataType: "json",
+                    data: {
+                        maxRows: 25,
+                        q: request.term
+                    },
+                    success: function( data ) {
+                        response( $.map( data, function( item ) {
+                            return {
+                                label: item.code + ' - ' + item.descriptor,
+                                value: item.code,
+								id: item.id
+                            }
+                        }));
+                    }
+                });
+            },
+            minLength: 2,
+            select: function( event, ui ) {
+				//console.log(ui);
+                log( ui.item ? "Selected: " + ui.item.label : "Nothing selected, input was " + this.value);
+	
+				$("#propertyid").val(ui.item.id); /* set the selected id */
+				
+            },
+            open: function() {
+                $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+				$("#propertyid").val('');  /* remove the id when change item */
+            },
+            close: function() {
+                $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+            },
+			messages: {
+				noResults: '',
+				results: function() {}
+			}
+			
+       });
+}
 
 $(document).ready(function(e) {
 	
-	var appRouter = new Router();
+	
+	
+	//$('#mdl-frm-product').modal('show');
+	//$(".modal .modal-title").text('Add Product');
+	
+	// $('#productTab a:last').tab('show')
+	
+	//var appRouter = new Router();
 	var appView = new AppView({model: app});
 	
 	
-	var materialModal = new MaterialModal({ model: material });
-    //console.log(materialModal.el);
-	materialModal.render();
-	//console.log(itemcatModalView.el);
-	var materialDataGridView = new DataGridView({model: material });
+	var productView = new ParentChildModal({model: product, collection: prodprops});
+	//console.log(productView.el);
+	
+	
+	
+	var detailView = new ModalDetailView({model: product, collection: prodprops});
+	detailView.render();
+	
+
+	var formDetailView = new FormDetailView({model: prodprop, collection: prodprops});
+	formDetailView.render();
+	
+	
+	var productDataGridView = new DataGridView({model: product, collection: prodprops});
+	
+	
+	
 
 	$('#tlbr-new').on('click', function(){
-		//$(".modal .modal-title").text('Add');
-		materialModal.modalTitle.text('Add Record');
-		materialModal.clearForm();
+		productView.modalTitle.text('Add Record');
+		productView.clearForm();
+		
 		btn = '<button type="button" id="modal-btn-save" class="btn btn-primary model-btn-save" data-dismiss="modal" disabled>Save</button>';
         btn += '<button type="button" id="modal-btn-save-blank" class="btn btn-primary model-btn-save-blank" disabled>Save &amp; Blank</button>';
         btn += '<button type="button" id="modal-btn-cancel" class="btn btn-default model-btn-cancel" data-dismiss="modal">Cancel</button>';
@@ -236,7 +306,7 @@ $(document).ready(function(e) {
 	
 	
 	
-	
+	itemSearch();
 	
 	
 	
@@ -244,17 +314,14 @@ $(document).ready(function(e) {
         "sPaginationType": "full_numbers",
 		"bProcessing": true,
         "bServerSide": true,
-        "sAjaxSource": "../api/datatables/v/material",
-	//	"sAjaxSource": "../www/test/datatable_test.php"
+        "sAjaxSource": "../api/datatables/v/product",
 		"fnHeaderCallback":  function( nHead, aData, iStart, iEnd, aiDisplay ) { 
-				
 				//var title = [,"Code","Descriptor"];
 				//console.log(title.length);
 				for(i=0; i<=$('th', nHead).length-1; i++) {
 					$('th', nHead).removeAttr('style');
-				}
-				
-			},
+				}				
+		},
 		"aoColumns": [
 			//{   "sTitle": "<input type='checkbox' class='select-all'></input>","mDataProp": null, "sWidth": "20px", "sDefaultContent": "<input type='checkbox' ></input>", "bSortable": false},
             { "mData": "code",  "sTitle": "Code",
@@ -262,29 +329,38 @@ $(document).ready(function(e) {
 							return data+'<div class="tb-data-action"><a class="row-delete" href="#">&nbsp;</a><a class="row-edit" href="#">&nbsp;</a></div>';
 				}
 			},
+			{ "mData": "brand",  "sTitle": "Brand" },
+			{ "mData": "model",  "sTitle": "Model" },
             { "mData": "descriptor",  "sTitle": "Descriptor" },
+			{ "mData": "category",  "sTitle": "Category" },
             { "mData": "type",  "sTitle": "Type" },
-            { "mData": "matcat",  "sTitle": "Category" },
-            { "mData": "onhand",  "sTitle": "Onhand" },
-            { "mData": "minlevel",  "sTitle": "Min Level" },
-            { "mData": "maxlevel",  "sTitle": "Max Level" },
-            { "mData": "reorderqty",  "sTitle": "Reorder Qty" },
-			{ "mData": "unitprice",  "sTitle": "Unit Price" },
-            { "mData": "floorprice",  "sTitle": "Floor Price" },
-            { "mData": "avecost",  "sTitle": "Ave Cost" }
+            
+            { "mData": "onhand",  "sTitle": "Onhand", "sClass":"number" },
+            { "mData": "minlevel",  "sTitle": "Min Level", "sClass":"number" },
+            { "mData": "maxlevel",  "sTitle": "Max Level", "sClass":"number" },
+            { "mData": "reorderqty",  "sTitle": "Reorder Qty", "sClass":"number" },
+			{ "mData": "unitprice",  "sTitle": "Unit Price", "sClass":"currency" },
+            { "mData": "floorprice",  "sTitle": "Floor Price", "sClass":"currency"},
+ 
 			],
 		"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
 
 	            $(nRow).attr("data-id", aData.id);
 				$(nRow).attr("id", aData.id);
 
-                $('td:eq(8), td:eq(9), td:eq(10)', nRow).addClass("currency").each(function(){
+                $('td:eq(12), td:eq(10),td:eq(11)', nRow).addClass("currency").each(function(){
                     $(this).toCurrency();
                 });
                 
-                $('td:eq(5),td:eq(6),td:eq(7), td:eq(4)', nRow).addClass("number");
-        	}
+                $('td:eq(6),td:eq(7), td:eq(8),  td:eq(9)' , nRow).addClass("number");
+        },
+		"fnFooterCallback": function( nFoot, aData, iStart, iEnd, aiDisplay ) {
+		 // nFoot.getElementsByTagName('th')[0].innerHTML = "Starting index is "+iStart;
+		}
+		
     });
+	
+	
 	
 	
 	
@@ -354,15 +430,15 @@ $(document).ready(function(e) {
             		</div>
                     <ul class="fd">
                         <li><a href="brand">Brands</a></li>
-<li><a href="model">Models</a></li>
-<li><a href="prodcat">Products Category</a></li>
-                        <li class="active"><a href="product">Products</a></li>
-                    	 <li><a href="propcat">Properties Category</a></li>
+                        <li><a href="model">Models</a></li>
+                        <li><a href="propcat">Properties Category</a></li>
                         <li><a href="property">Properties</a></li>
-                        <li><a href="itemcat">Items Category</a></li>
-                        <li><a href="item">Item</a></li>
-                        <li><a href="supplier">Supplier</a></li>
-                        <li><a href="bank">Bank</a></li>
+                        <li><a href="prodcat">Products Category</a></li>
+                        <li class="active"><a href="product">Products</a></li>
+                        <li><a href="itemcat">APV Items Category</a></li>
+                        <li><a href="item">APV Items</a></li>
+                        <li><a href="supplier">Suppliers</a></li>
+                        <li><a href="bank">Banks</a></li>
                     </ul>
             	</div>
                 <div id="menu1" class="nav deactive">
@@ -412,7 +488,7 @@ $(document).ready(function(e) {
 			
 			<header>
             	<div class="mod-name">
-                	<h1>Masterfiles Management</h1>
+                	<h1>Products</h1>
                     <nav id="breadcrum">
 						<ul>
 							<li><a href="../">Home</a></li>
@@ -469,7 +545,7 @@ $(document).ready(function(e) {
                     	<button id="tlbr-new" class="toolbar-minibutton" data-target="#mdl-frm-itemcat" data-toggle="modal" type="button" title="Create New Record">New</button>
                         <button id="tlbr-refresh-datatable" class="toolbar-minibutton" type="button" title="Refresh Datatable">Refresh</button>
                         -->
-                        <button id="tlbr-new" class="toolbar-minibutton" data-target="#mdl-frm-itemcat" data-toggle="modal" type="button" title="Create New Record"><div class="tlbr-new">&nbsp;</div></button>
+                        <button id="tlbr-new" class="toolbar-minibutton" data-target="#mdl-frm-product" data-toggle="modal" type="button" title="Create New Record"><div class="tlbr-new">&nbsp;</div></button>
                         <button id="tlbr-refresh-datatable" class="toolbar-minibutton" type="button" title="Refresh Datatable"><div class="tlbr-refresh">&nbsp;</div></button>
                         
                         <!--
@@ -540,7 +616,24 @@ $(document).ready(function(e) {
 		                          </tr>
                                   
 		                        </tbody>
-                                -->
+                                
+                                <tfoot>
+                                	<tr>
+                                    	<td>Code</td>
+                                        <td>Brand</td>
+                                        <td>Model</td>
+                                        <td>Descriptor</td>
+                                        <td>Category</td>
+                                        <td>Type</td>
+                                        <td>Onhand</td>
+                                        <td>Min Level</td>
+                                        <td>Max Level</td>
+                                        <td>Reorder Qty</td>
+                                        <td>Unit Price</td>
+                                        <td>Floor Price </td>
+                                    </tr>
+                                </tfoot>
+                            	-->										  
 	                        </table>
                 </div>
             </section>
@@ -560,7 +653,7 @@ $(document).ready(function(e) {
 </div>
 
 
- <div class="modal fade" id="mdl-frm-itemcat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+ <div class="modal fade" id="mdl-frm-product" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -568,7 +661,47 @@ $(document).ready(function(e) {
           <h4 class="modal-title"></h4>
         </div>
         <div class="modal-body">
-			
+			<div class="modal-parent-child">
+            
+            	<ul class="nav nav-tabs" id="productTab">
+                  <li class="active"><a href="#tab-general" data-toggle="tab">General</a></li>
+                  <li><a href="#tab-property" data-toggle="tab">Properties</a></li>
+                  <li><a href="#tab-model-property" data-toggle="tab">Model Properties</a></li>                 
+                </ul>
+                
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab-general">
+                        <div class="modal-body-parent">
+                		</div>
+                    </div>
+                    <div class="tab-pane" id="tab-property">
+                    	
+                        <div class="modal-body-child" style="margin-top: 20px;">
+                        </div>
+                        <div class="modal-body-item">
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab-model-property">
+                    	
+                        <div class="modal-body-child2" style="margin: 20px 0;">
+                        <table class="modal-tb-detail" cellpadding="0" cellspacing="0" width="100%" border="0">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Property</th>
+                                <th>Value</th>
+                        	</tr>
+                        <tbody class="items-tbody2">
+                        </tbody>
+                        </table>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+                
+                
+           	</div>
         </div>
         <div class="modal-footer">
           <!--

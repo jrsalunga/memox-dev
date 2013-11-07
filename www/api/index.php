@@ -391,9 +391,29 @@ function deleteTable($table, $id) {
 
 function getRealTables($table) {
 
+    $app = \Slim\Slim::getInstance();
+    $request = $app->request();
+
+    //echo json_encode($_GET);
+
+    $brandid = $request->get('brandid');
+    $productid = $request->get('productid');
+
     $sTable = ucfirst($table);
+
+    if(isset($brandid)){
+       $oTable = $sTable::find_all_by_field_id('brand', $brandid);
+    } else if(isset($productid)){
+       $oTable = $sTable::find_all_by_field_id('product', $productid);
+    } else {
+        $oTable = $sTable::find_all();
+    }
+
+
+
+   
     
-    $oTable = $sTable::find_all();
+   
 
     if($oTable){
         echo json_encode($oTable);

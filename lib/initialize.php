@@ -60,20 +60,27 @@ require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.propcat.php');
 require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.property.php');
 require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.prodcat.php');
 require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.product.php');
+require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.prodprop.php');
 require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.itemcat.php');
 require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.item.php');
 require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.bank.php');
 require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.supplier.php');
 require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.apvhdr.php');
 require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.apvdtl.php');
+require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.modelprop.php');
 
-require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.view.material.php');
+require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.prodpropproperty.php');
+
+
 require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.view.property.php');
 require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.view.model.php');
 require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.view.item.php');
 require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.view.apvhdr.php');
+require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.view.product.php');
 
 require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.v.supplier.php');
+
+require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.view.prodpropproperty.php');
 
 
 

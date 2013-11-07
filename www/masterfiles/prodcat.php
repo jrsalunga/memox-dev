@@ -226,14 +226,14 @@ $(document).ready(function(e) {
                     <ul class="fd">
                     	<li><a href="brand">Brands</a></li>
                     	<li><a href="model">Models</a></li>
+                    	<li><a href="propcat">Properties Category</a></li>
+                        <li><a href="property">Properties</a></li>
                         <li class="active"><a href="prodcat">Products Category</a></li>
                         <li><a href="product">Products</a></li>
-                    	 <li><a href="propcat">Properties Category</a></li>
-                        <li><a href="property">Properties</a></li>
-                        <li><a href="itemcat">Items Category</a></li>
-                        <li><a href="item">Item</a></li>
-                        <li><a href="supplier">Supplier</a></li>
-                        <li><a href="bank">Bank</a></li>
+                        <li><a href="itemcat">APV Items Category</a></li>
+                        <li><a href="item">APV Items</a></li>
+                        <li><a href="supplier">Suppliers</a></li>
+                        <li><a href="bank">Banks</a></li>
                     </ul>
             	</div>
                 <div id="menu1" class="nav deactive">
@@ -283,7 +283,7 @@ $(document).ready(function(e) {
 			
 			<header>
             	<div class="mod-name">
-                	<h1>Masterfiles Management</h1>
+                	<h1>Products Category</h1>
                     <nav id="breadcrum">
 						<ul>
 							<li><a href="../">Home</a></li>

@@ -14,8 +14,9 @@ class Property extends DatabaseObject{
 	public $id;
 	public $code;
 	public $descriptor;
-	public $propcatid;
 	public $ordinal;
+	public $propcatid;
+	
 	
 	
 	public static function find_all($order=NULL) {

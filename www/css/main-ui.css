@@ -139,7 +139,7 @@
 @media only screen and (max-width: 52em) {
 	[role^="navigation"],	
 	[role^="sidebar"] {
-		width: 90%;
+		width: 30%;
 		margin-left: -100%;
 		z-index: 2;
 		background-color: #fff;
@@ -978,5 +978,8 @@ background-repeat: no-repeat;
 }
 
 
+.table-model #code {
+	text-transform: uppercase;
+}
 
 
