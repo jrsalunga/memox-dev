@@ -46,7 +46,12 @@ var ModalBodyView = Backbone.View.extend({
     	//'blur input': 'updateModel', kelangan mo pa ito gawin about validationError
     	'change select': 'checkValidity',
     	'keyup [required]': 'checkValidity',
-    	'blur textarea': 'checkValidity'
+    	'blur textarea': 'checkValidity',
+    	'keyup #code': 'toUpper'	
+    },
+	toUpper: function(e){
+	
+		return $(e.currentTarget).val($(e.currentTarget).val().toUpperCase());	   
     },
     render: function() {
     	//console.log(this.collection);
@@ -236,10 +241,16 @@ var DataGridView = Backbone.View.extend({
 			e.preventDefault();
 			e.stopPropagation();
 			var that = this;
-
+			var tb = $(".table-model").data('table');
+			console.log(tb);
+			//tb = capitaliseFirstLetter(tb);
+			//this.model.set({mode: 'edit', text: tb + ': Edit Record'});
 			this.model.set({mode: 'edit', text: 'Edit Record'});
 			//console.log(this.options.settings.toJSON());
 			var id = $(e.currentTarget).parent().parent().parent().data('id');
+
+			
+			
 			this.model.set({'id':id});	
 			this.model.fetch({
 				beforeSend: function(){

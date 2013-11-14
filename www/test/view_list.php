@@ -28,5 +28,10 @@ FROM product a, property b, prodprop c, propcat d
 WHERE a.id = c.productid AND c.propertyid = b.id AND b.propcatid = d.id
 ORDER BY d.ordinal ASC, b.ordinal ASC";
 
+$vProperty = "SELECT a.code, a.descriptor, b.descriptor as propcat, a.ordinal, a.propcatid, a.id
+FROM property a
+LEFT JOIN  propcat b
+ON a.propcatid = b.id"
+
 
 ?>

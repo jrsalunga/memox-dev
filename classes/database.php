@@ -128,7 +128,7 @@ class MySQLDatabase {
 		$result = $this->query($sql);
 		$row = $this->fetch_array($result);
 		$this->last_uid = $row[0];
-		return $row[0];
+		return strtoupper($row[0]);
 	}
 	
 	public function startTransaction() {

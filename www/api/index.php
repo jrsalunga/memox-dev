@@ -109,14 +109,46 @@ $app->put('/post/detail/:table/:table2/:apvhdrid', 'putDetpostDetailail');
 $app->post('/txn/post/apvhdr/:id', 'postingApvhdr');
 $app->post('/txn/post/apvhdr/:id/cancelled', 'postingCancelledApvhdr');
 
+$app->get('/txn/v/:child/:parent/:id', 'getChildTable');
 $app->get('/txn/:child/:parent/:id', 'getChildTable');
 $app->get('/txn/delete/:child/:parent/:id', 'deleteChildTable'); 
+$app->delete('/txn/:child/:parent/:id', 'deleteChildTable'); 
+
+$app->get('/property/all/:productid/:modelid', 'getAllProperty'); 
 
 
 
 
  /*****************************  Run App **************************/
 $app->run();
+
+function getAllProperty($productid, $modelid){
+
+    global $database;
+
+    $sql = "SELECT C.descriptor AS propcat, C.ordinal AS propcatord, ";
+    $sql .= "B.descriptor AS property, B.ordinal AS propord, A.descriptor AS propdesc "; 
+    $sql .= "FROM modelprop A, property B, propcat C ";
+    $sql .= "WHERE A.propertyid = B.id AND B.propcatid = C.id ";
+    $sql .= "AND A.modelid='". $modelid ."' UNION ";
+    $sql .= "SELECT C.descriptor AS propcat, C.ordinal AS propcatord, ";
+    $sql .= "B.descriptor AS property, B.ordinal AS propord, A.descriptor AS propdesc ";
+    $sql .= "FROM prodprop A, property B, propcat C ";
+    $sql .= "WHERE A.propertyid = B.id AND B.propcatid = C.id ";
+    $sql .= "AND A.productid='". $productid ."' ORDER BY 2, 1, 4";
+
+
+    $result = $database->query($sql);
+    $objs = array();
+
+    while ($row = $database->fetch_assoc($result)) {
+        
+        array_push($objs, $row);    
+    }
+
+    echo json_encode($objs);
+    
+}
 
 function getChildTable($child, $parent, $id){
 
@@ -150,8 +182,8 @@ function deleteChildTable($child, $parent, $id){
             
             $respone = array(
                 'status' => 'error', 
-                'code' => '400',
-                'message' => 'details not deleted saved'
+                'code' => '300',
+                'message' => 'no details found'
             );
         } else {
             $respone = array(

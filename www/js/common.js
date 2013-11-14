@@ -7,7 +7,7 @@ $(document).ready(function() {
 
 	//$('#h-main-logo > img').attr('src','../images/mfi-logo.jpg');
 	//$('.comp-name > h1').text('Modularfusion Inc');
-	
+
 	
 	//$(".table-model .currency").maskMoney();
 	$(".table-model .currency").each(function(){
@@ -1089,6 +1089,12 @@ function guid() {
    return (S4()+S4()+S4()+S4()+S4()+S4()+S4()+S4());
 }
 
+
+function capitaliseFirstLetter(string)
+{
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 /*
 
 function guid(){
@@ -1574,6 +1580,26 @@ $.fn.toCurrency = function(){
 		val = this.val();   // if it is not input, get the text value
 		newValue = parseFloat(val);  // convert the value to integer
 		var converted = new NumberFormat(newValue).toFormatted();	// format the value to .00 from the class	
+		return this.val(converted); // return the formatted value
+	}
+	
+	//console.log("to currecny log "+ converted);	
+}
+
+$.fn.toInt = function(){
+	
+	var type = this.type, val, newValue, converted;
+	
+	if(type===undefined) { // check the type of element if type==input
+		val = this.text();   // if it is not input, get the text value
+		newValue = parseInt(val);  // convert the value to integer
+		//console.log(newValue);
+		var converted = accounting.formatNumber(newValue);	// format the value to .00 from the class	
+		return this.text(converted); // return the formatted value
+	} else {
+		val = this.val();   // if it is not input, get the text value
+		newValue = parseInt(val);  // convert the value to integer
+		var converted = accounting.formatNumber(newValue);	// format the value to .00 from the class	
 		return this.val(converted); // return the formatted value
 	}
 	

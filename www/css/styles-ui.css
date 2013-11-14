@@ -465,6 +465,19 @@ button.minibutton[disabled]:hover {
 	opacity: 1;
 }
 
+.tb-data-action > .row-view {
+	background-image: url(../images/glyphicons-halflings.png);
+	opacity: 0.5;
+	background-position: -23px -23.5px;;
+	margin-right: 5px;
+}
+
+.tb-data-action > .row-view:hover {
+	opacity: 1;
+}
+
+
+
 .tb-data tbody tr:hover td:first-of-type > div > a:hover {
     color: #80808E;
     text-decoration:none;
@@ -1035,3 +1048,83 @@ input[type=checkbox].toggle {
     color: #212121;
     font-weight: normal;
 }
+
+
+
+
+
+
+
+
+
+.prod-property {
+	width: 100%;
+	background-color: #FAFAFA;	
+}
+
+
+.prod-property td{
+	border-top: 1px solid #f0f0f0;
+	padding: 3px;	
+}
+
+.prod-property td[rowspan]:first-of-type{
+	color: #B23F33;
+
+	text-transform: uppercase;
+}
+
+.prod-property td[rowspan]:first-of-type + td,
+.prod-property td:first-of-type{
+	color: #7D7464;	
+}
+
+.prod-property td:last-of-type{
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:11px;
+}
+
+
+
+/**************** product-profile ************/
+
+.product-profile {
+	position: relative;	
+}
+
+.product-profile h3 {
+	margin: 0 0 10px 0;
+	color: #b23f33;
+}
+
+
+.product-profile-lpane {
+	float: left; 
+	width: 160px;
+	margin-right: 10px;
+	
+}
+
+
+.product-profile-rpane {
+	float: left; 
+	width: 468px;	
+}
+
+.product-profile-lpane .img-holder{
+	/*border: 1px solid #ccc; */
+	text-align:center;
+	height: 184px;
+	width: 158px;
+	max-height: 185px;
+	max-width: 160px;
+	margin-bottom: 10px;	
+}
+
+.product-profile-lpane .img-holder img{
+
+}
+
+
+
+

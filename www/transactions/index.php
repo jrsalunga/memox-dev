@@ -89,35 +89,35 @@ $(document).ready(function(e) {
 	  	
 		<div id="nav-container">
         	<nav class="main-nav">
-            	<div id="menu0" class="nav active">
+            	<div id="menu0" class="nav deactive">
            			<div class="bb">
             			<div class="Sj"></div>
            				<div class="yb"></div>
             			<div class="kk">Masterfiles</div>
             		</div>
                     <ul class="fd">
-                        <li><a href="brand">Brands</a></li>
-                        <li><a href="model">Models</a></li>
-                        <li><a href="prodcat">Products Category</a></li>
-                        <li><a href="product">Products</a></li>
-                    	<li><a href="propcat">Properties Category</a></li>
-                        <li><a href="property">Properties</a></li>
-                        <li><a href="itemcat">Items Category</a></li>
-                        <li><a href="item">Item</a></li>
-                        <li><a href="supplier">Supplier</a></li>
-                        <li><a href="bank">Bank</a></li>
+                        <li><a href="masterfiles/brand">Brands</a></li>
+                        <li><a href="masterfiles/model">Models</a></li>
+                        <li><a href="masterfiles/prodcat">Products Category</a></li>
+                        <li><a href="masterfiles/product">Products</a></li>
+                    	<li><a href="masterfiles/propcat">Properties Category</a></li>
+                        <li><a href="masterfiles/property">Properties</a></li>
+                        <li><a href="masterfiles/itemcat">Items Category</a></li>
+                        <li><a href="masterfiles/item">Item</a></li>
+                        <li><a href="masterfiles/supplier">Supplier</a></li>
+                        <li><a href="masterfiles/bank">Bank</a></li>
                     </ul>
             	</div>
-                <div id="menu1" class="nav deactive">
+                <div id="menu1" class="nav active">
                		<div class="bb">
                         <div class="Sj"></div>
                         <div class="yb"></div>
                         <div class="kk">Transactions</div>
                		</div>
                     <ul class="fd">
-                   		<li><a href="transactions/apvhdr">Accounts Payable</a></li>
-                        <li><a href="transactions/check.php">check</a></li>
-                        <li><a href="transactions/invoice.php">invoice</a></li>
+                   		<li><a href="apvhdr">Accounts Payable</a></li>
+                        <li><a href="check">check</a></li>
+                        <li><a href="invoice">invoice</a></li>
                     </ul>
                 </div>
                 <div id="menu2" class="nav deactive">
@@ -159,7 +159,7 @@ $(document).ready(function(e) {
                     <nav id="breadcrum">
 						<ul>
 							<li><a href="../">Home</a></li>
-							<li>Masterfiles</li>
+							<li>Transactions</li>
 							
 						</ul>
                     </nav>

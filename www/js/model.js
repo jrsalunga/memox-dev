@@ -219,10 +219,16 @@ var	ParentChildModal = Backbone.View.extend({
 	    	'keyup input': 'checkValidity',
 	    	'blur .table-model input': 'checkValidity',
 	    	//'blur input': 'updateModel', kelangan mo pa ito gawin about validationError
-	    	'change select': 'checkValidity'
+	    	'change select': 'checkValidity',
 	    	//'blur textarea': 'checkValidity',
 	    	//'change #brandid': 'renderModelSelector',
 	    	//'change #modelid': 'renderModelDescriptor'
+	    	'keyup #code': 'toUpper'	
+	    },
+		toUpper: function(e){
+		
+			return $(e.currentTarget).val($(e.currentTarget).val().toUpperCase());	   
+	    
 	    },
 		render: function(){
 			
@@ -241,7 +247,7 @@ var	ParentChildModal = Backbone.View.extend({
 		        	this.$el.find("#"+k).prop( "disabled", true );
 		        	this.$el.find('.modal-tb-detail .tb-data-action').hide();
 		        	
-		        	console.log($('.modal-tb-detail .tb-data-action'));
+		        	//console.log($('.modal-tb-detail .tb-data-action'));
 
 		        	$('.modal-table-detail').hide();
 
@@ -422,6 +428,36 @@ var	ParentChildModal = Backbone.View.extend({
     		}
     		
     	},
+    	modalConfirmDelete: function(){
+
+    		var that = this;
+    		
+    		$.ajax({
+		        type: 'GET',
+		        contentType: 'application/json',
+				url: '../api/txn/delete/modelprop/model/'+ this.model.get('id'),
+		        dataType: "json",
+		        async: false,
+		        //data: formData,
+		        success: function(data, textStatus, jqXHR){
+					aData = data; 			
+		        },
+		        error: function(jqXHR, textStatus, errorThrown){
+		            alert(textStatus + 'Failed on deleteing modelprop data');
+		        }
+		    });
+
+    		console.log(aData);
+    		//if(aData.status == 'ok'){
+    			this.model.destroy({
+			    	success: function(model, respone){
+			    		console.log(respone);
+			    		set_alert2('success', 'Yeay', that.model.get('descriptor') + ' deleted!');
+			   		}
+			  	});
+    		//}
+		    return aData;
+    	},
     	cleanModelData: function(){
     		// clean data before saving
     		this.model.unset('mode', {silent: true}); //remove the added model field
@@ -521,7 +557,7 @@ var	FormDetailView = Backbone.View.extend({
 					
 					if(data.id==undefined || data.id==''){
 						console.log('add to collection');
-						data['id'] = guid();
+						//data['id'] = guid();
 						console.log(data);
 						this.collection.add(data);	
 

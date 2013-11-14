@@ -1,4 +1,8 @@
-﻿<!DOCTYPE HTML>
+﻿<?php
+include_once('../lib/initialize.php');
+!$session->is_logged_in() ? redirect_to("login"): "";
+?>
+<!DOCTYPE HTML>
 <html lang="en-ph">
 <head>
 <meta charset="utf-8">
@@ -22,8 +26,7 @@
 <script src="js/vendors/underscore-min.js"></script>
 <script src="js/vendors/backbone-min.js"></script>
 <script src="js/vendors/bootstrap.min.js"></script>
-<script src="js/vendors/backbone-forms.min.js"></script>
-<script src="js/vendors/backbone-forms-list.min.js"></script>
+
 <script src="js/vendors/jquery.dataTables.min.js"></script>
 <script src="js/vendors/backbone-validation-min.js"></script>
 <script src="js/common.js"></script>

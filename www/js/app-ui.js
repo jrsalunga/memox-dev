@@ -130,11 +130,13 @@
 			routes: {
 				"":"index",
 				":table":"getTable"	,
-				"location": "showCategory"
+				"location": "showCategory",
+				"property/:proprtyid/:modelid": "showProductProperty",
+				"view/:proprtyid/:modelid": "viewProductProperty"
 			},
 			index: function(){
 			
-				//console.log("index");
+				console.log("index");
 			},
 			showCategory: function(){
 				
@@ -205,6 +207,166 @@
 				$(".form-container").html('cdsdhjhh');
 				
 				//console.log($("from").formToJSON());
+			},
+			showProductProperty: function(productid, modelid){
+				console.log("showProductProperty");
+				var aData;
+
+				
+				var xbtn = $(".toolbar").html();
+				var btn = '<button title="Create New Record" type="button" class="toolbar-minibutton" id="tlbr-propback">';
+				btn += '<div class="tlbr-propback">Back</div></button>';
+				$(".toolbar").html(btn);
+				$(".tb-data-container").html('');
+
+				$.ajax({
+			        type: 'GET',
+			        contentType: 'application/json',
+					url: '../api/property/all/'+productid+'/'+modelid,
+			        dataType: "json",
+			        async: false,
+			        //data: formData,
+			        success: function(data, textStatus, jqXHR){
+						aData = data; 			
+			        },
+			        error: function(jqXHR, textStatus, errorThrown){
+			            alert(textStatus + 'Failed on fetching model property data');
+			        }
+		    	});
+
+				//console.log(aData);
+		    	//console.log(_.where(aData, {propcat: 'General'}));
+				//console.log(_.pluck(aData, 'propcat'));
+				//console.log(_.groupBy(aData, 'propcat'));	
+
+				var group = _.groupBy(aData, 'propcat');
+
+				var content = '';
+				content += '<table cellspacing="0" cellpadding="5" class="prod-property">'	
+				
+				_.each(group, function(propcats, key){
+					
+					content += '<tr><td rowspan="'+ propcats.length +'">'+ key + '</td>';			
+						
+						var ctr = 1;
+						_.each(propcats, function(propcat, key){
+							
+							if(ctr==1){
+								content += '<td>'+ propcat.property +'</td><td>'+ propcat.propdesc +'</td>';
+							} else {
+								content += '<tr><td>'+ propcat.property +'</td><td>'+ propcat.propdesc +'</td></tr>';
+							}
+							ctr++;
+						});
+
+					content += '</tr>';	
+				});
+				content += '</table>';
+
+				//console.log(content);
+
+				$(".tb-data-container").html(content);
+
+				$('.toolbar').on('click', '#tlbr-propback', function(){
+					//$(".tb-data-container").html('<table class="tb-data" cellpadding="0" cellspacing="0" width="100%"></table>');
+					//$(".toolbar").html(xbtn);
+					window.location = 'product';
+				});
+
+
+				
+
+
+
+				//var sortedGroup = _.sortBy(group, 'propcatord');
+
+				//console.log(sortedGroup);			
+			},
+			viewProductProperty: function(productid, modelid){
+				console.log('viewProductProperty');
+
+
+				var aData, aProduct;
+
+				$.ajax({
+			        type: 'GET',
+			        contentType: 'application/json',
+					url: '../api/property/all/'+productid+'/'+modelid,
+			        dataType: "json",
+			        async: false,
+			        //data: formData,
+			        success: function(data, textStatus, jqXHR){
+						aData = data; 			
+			        },
+			        error: function(jqXHR, textStatus, errorThrown){
+			            alert(textStatus + 'Failed on fetching model property data');
+			        }
+		    	});
+
+
+				var group = _.groupBy(aData, 'propcat');
+
+				var propContent = '';
+				propContent += '<table class="prod-property">'	
+				
+				_.each(group, function(propcats, key){	
+					propContent += '<tr><td rowspan="'+ propcats.length +'">'+ key + '</td>';			
+						var ctr = 1;
+						_.each(propcats, function(propcat, key){
+							if(ctr==1){
+								propContent += '<td>'+ propcat.property +'</td><td>'+ propcat.propdesc +'</td>';
+							} else {
+								propContent += '<tr><td>'+ propcat.property +'</td><td>'+ propcat.propdesc +'</td></tr>';
+							}
+							ctr++;
+						});
+					propContent += '</tr>';	
+				});
+				propContent += '</table>';
+
+				var tpl = _.template('');
+
+		    	//var prod = new Product();
+		    	//prod.set({id: productid});
+		    	//prod.fetch();
+
+		    	$.ajax({
+			        type: 'GET',
+			        contentType: 'application/json',
+					url: '../api/t/product/'+productid,
+			        dataType: "json",
+			        async: false,
+			        //data: formData,
+			        success: function(data, textStatus, jqXHR){
+						aProduct = data; 			
+			        },
+			        error: function(jqXHR, textStatus, errorThrown){
+			            alert(textStatus + 'Failed on fetching model property data');
+			        }
+		    	});	
+		    	console.log(aProduct);
+
+		    	var prodContent = '<div class="product-profile"><h3>'+ aProduct.brand +' '+ aProduct.model +'</h3>';
+		    	prodContent += '<div class="product-profile-lpane">';
+		    	prodContent += '<div class="img-holder">';
+		    	prodContent += '<img src="../images/products/'+ aProduct.picfile +'"></div>';
+		    	prodContent += '<ul>';
+		    	prodContent += '<li>'+ aProduct.code +'</li>';
+		    	prodContent += '<li>'+ aProduct.descriptor +'</li>';
+		    	prodContent += '<li>'+ aProduct.category +'</li>';
+		    	prodContent += '<li>'+ aProduct.type +'</li>';
+		    	prodContent += '';
+		    	prodContent += '';
+		    	prodContent += '</ul>';
+		    	prodContent += '</div><div class="product-profile-rpane"></div>'; 
+		    	prodContent += '</div><div style="clear: both;"></div>';
+
+		    	$('#mdl-view-product .modal-body').html(prodContent);
+		    	$('.product-profile-rpane').html(propContent);
+
+
+		    	$('#mdl-view-product').modal('show');
+		    	
 			}
 		});
 

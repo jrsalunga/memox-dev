@@ -1,5 +1,6 @@
 <?php
-require_once('../../lib/initialize.php');
+include_once('../../lib/initialize.php');
+!$session->is_logged_in() ? redirect_to("../../login"): "";
 ?>
 <!DOCTYPE HTML>
 <html lang="en-ph">
@@ -7,7 +8,7 @@ require_once('../../lib/initialize.php');
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="chrome=1">
 
-<title>Modularfusion Inc - Supplier</title>
+<title>Modularfusion Inc - Accounts Payable</title>
 <link rel="shortcut icon" type="image/x-icon" href="../images/memoxpress-favicon.jpg" />
 
 <link rel="stylesheet" href="../css/bootstrap.css">
@@ -125,7 +126,7 @@ require_once('../../lib/initialize.php');
 	
 	</tbody>
 	<tfoot>
-	<tr><td colspan="2">
+	<tr><td>
 	
 	</td>
 	<td>  
@@ -195,7 +196,11 @@ function itemSearch(){
             },
             close: function() {
                 $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
-            }
+            },
+			messages: {
+				noResults: '',
+				results: function() {}
+			}
 			
        });
 }
@@ -378,8 +383,8 @@ $(document).ready(function(e) {
                		</div>
                     <ul class="fd">
                    		<li class="active"><a href="apvhdr">Accounts Payable</a></li>
-                        <li><a href="../masterfiles/check.php">check</a></li>
-                        <li><a href="../masterfiles/invoice.php">invoice</a></li>
+                        <li><a href="check">check</a></li>
+                        <li><a href="invoice">invoice</a></li>
                     </ul>
                 </div>
                 <div id="menu2" class="nav deactive">
@@ -421,7 +426,7 @@ $(document).ready(function(e) {
                     <nav id="breadcrum">
 						<ul>
 							<li><a href="../">Home</a></li>
-							<li><a href="../transacrions">Masterfiles</a></li>
+							<li><a href="../transactions">Transactions</a></li>
 							<li>Accounts Payable</li>
 						</ul>
                     </nav>

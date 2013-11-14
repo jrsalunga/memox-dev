@@ -1,6 +1,6 @@
 <?php
-
-require_once('../../lib/initialize.php');
+include_once('../../lib/initialize.php');
+!$session->is_logged_in() ? redirect_to("../../login"): "";
 ?>
 <!DOCTYPE HTML>
 <html lang="en-ph">
@@ -27,8 +27,7 @@ require_once('../../lib/initialize.php');
 <script src="../js/vendors/underscore-min.js"></script>
 <script src="../js/vendors/backbone-min.js"></script>
 <script src="../js/vendors/bootstrap.min.js"></script>
-<script src="../js/vendors/backbone-forms.min.js"></script>
-<script src="../js/vendors/backbone-forms-list.min.js"></script>
+
 <script src="../js/vendors/jquery.dataTables.min.js"></script>
 <script src="../js/vendors/backbone-validation-min.js"></script>
 <script src="../js/vendors/NumberFormat154.js"></script>
@@ -124,7 +123,7 @@ require_once('../../lib/initialize.php');
 						
 						<tr>
 							<td><label for="onhand">Onhand: </label></td>
-							<td><input type="text" name="onhand" id="onhand" maxlength="15" class="number"></td>
+							<td><input type="text" name="onhand" id="onhand" maxlength="15" class="number" readonly></td>
 						</tr>
 						<tr>
 							<td><label for="minlevel">Min Level: </label></td>
@@ -267,11 +266,12 @@ $(document).ready(function(e) {
 	
 	// $('#productTab a:last').tab('show')
 	
-	//var appRouter = new Router();
+	var appRouter = new Router();
 	var appView = new AppView({model: app});
 	
 	
 	var productView = new ParentChildModal({model: product, collection: prodprops});
+	
 	//console.log(productView.el);
 	
 	
@@ -287,9 +287,12 @@ $(document).ready(function(e) {
 	var productDataGridView = new DataGridView({model: product, collection: prodprops});
 	
 	
-	
+	$('#mdl-view-product').on('hidden.bs.modal', function () {
+  		appRouter.navigate('', {trigger: false});
+	});
 
 	$('#tlbr-new').on('click', function(){
+		/*
 		productView.modalTitle.text('Add Record');
 		productView.clearForm();
 		
@@ -297,10 +300,13 @@ $(document).ready(function(e) {
         btn += '<button type="button" id="modal-btn-save-blank" class="btn btn-primary model-btn-save-blank" disabled>Save &amp; Blank</button>';
         btn += '<button type="button" id="modal-btn-cancel" class="btn btn-default model-btn-cancel" data-dismiss="modal">Cancel</button>';
         $('.modal-footer').html(btn);  
+		*/
+		
+		productView.appendBlank();
 	});
 
+	//Backbone.history.start({pushState: true, root: 'masterfiles/product/'});
 	Backbone.history.start();
-	
 	
 	
 	
@@ -326,7 +332,8 @@ $(document).ready(function(e) {
 			//{   "sTitle": "<input type='checkbox' class='select-all'></input>","mDataProp": null, "sWidth": "20px", "sDefaultContent": "<input type='checkbox' ></input>", "bSortable": false},
             { "mData": "code",  "sTitle": "Code",
 				"mRender": function ( data, type, full ) {
-							return data+'<div class="tb-data-action"><a class="row-delete" href="#">&nbsp;</a><a class="row-edit" href="#">&nbsp;</a></div>';
+							
+							return data+'<div class="tb-data-action"><a class="row-delete" href="#">&nbsp;</a><a class="row-edit" href="#">&nbsp;</a><a class="row-view" href="#view/'+ full.id +'/'+ full.modelid +'">&nbsp;</a></div>';
 				}
 			},
 			{ "mData": "brand",  "sTitle": "Brand" },
@@ -352,7 +359,12 @@ $(document).ready(function(e) {
                     $(this).toCurrency();
                 });
                 
-                $('td:eq(6),td:eq(7), td:eq(8),  td:eq(9)' , nRow).addClass("number");
+                $('td:eq(6),td:eq(7), td:eq(8),  td:eq(9)' , nRow).addClass("number").each(function(){
+					//console.log($(this));
+                    $(this).toInt();
+                });
+				
+				
         },
 		"fnFooterCallback": function( nFoot, aData, iStart, iEnd, aiDisplay ) {
 		 // nFoot.getElementsByTagName('th')[0].innerHTML = "Starting index is "+iStart;
@@ -709,6 +721,21 @@ $(document).ready(function(e) {
           <button type="button" is="mdl-btn-save-blank" class="btn btn-primary model-btn-save-blank" disabled>Save &amp; Blank</button>
           <button type="button" id="mdl-btn-save" class="btn btn-default model-btn-cancel" data-dismiss="modal" disabled>Cancel</button>
         	-->
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+  
+  
+  <div class="modal fade" id="mdl-view-product" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:700px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">View Product</h4>
+        </div>
+        <div class="modal-body">
+			
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
