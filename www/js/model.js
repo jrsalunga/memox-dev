@@ -647,7 +647,7 @@ var DataGridView = Backbone.View.extend({
 			e.stopPropagation();
 			var that = this;
 
-			this.model.set({mode: 'edit', text: 'Edit Model Record'});
+			this.model.set({mode: 'edit', text: 'Edit Record - Model'});
 			//console.log(this.options.settings.toJSON());
 			var id = $(e.currentTarget).parent().parent().parent().data('id');
 			this.model.set({'id':id});	
@@ -675,9 +675,11 @@ var DataGridView = Backbone.View.extend({
 			e.stopPropagation();
 			var that = this;
 
-			this.model.set({mode: 'delete', text: 'Delete Model Record'});
+			this.model.set({mode: 'delete', text: 'Delete Record - Model'});
 			//console.log(this.options.settings.toJSON());
 			var id = $(e.currentTarget).parent().parent().parent().data('id');
+
+
 			this.model.set({'id':id});	
 			this.model.fetch({
 				beforeSend: function(){

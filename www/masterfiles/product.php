@@ -164,6 +164,16 @@ include_once('../../lib/initialize.php');
 					<label for="file_upload" class="lbl-file_upload">Upload</label> 
 					<input type="file" id="file_upload" name="file_upload" style="display: none" />
 				</div>
+				<div class="dropbox-container2">
+					<div id="dropbox2">
+						<div style="text-align: center;">
+						<span class="imageHolder">
+						<img src="">
+						<span class="uploaded"></span>
+						</span>
+						</div>
+					</div>
+				</div>
 				<div class="prod-image_after">&nbsp;</div>
 				
 		 	

@@ -30,6 +30,7 @@ var ModelSelectsView = Backbone.View.extend({
 		},
 		render: function(){
 			this.$el.html('');
+			//this.$el.append('<option value="***"">-- select model --</option>');
 			this.addAll();
 			return this;
 		},
@@ -184,6 +185,48 @@ var prodprops = new Prodprops();
 		}
 	});
 
+var ProdpropView2 = Backbone.View.extend({
+		tagName: 'tr',
+		initialize: function(){
+
+			this.model.on('remove', this.removeMe, this);
+			this.model.on('destroy', this.render, this);
+			this.model.on('change', this.render, this);
+			
+			this.template = _.template('<td> <%=category%> '+
+				//'<div class="tb-data-action" data-property="<%=property%>">'+
+				//'<a class="row-delete" data-id="" href="#">&nbsp;</a>'+
+				//'<a class="row-edit" data-id="" href="#">&nbsp;</a>'+
+				//'</div>'+
+				'</td>'+
+				'<td> <%=property%> </td>' +
+				'<td> <%=value%> </td>');
+		},
+		events: {
+			'dblclick td:first-of-type' : "clickMe"
+			//'click .row-edit': "editMe"
+			//'click .row-delete': "removeMe"
+		},
+		render: function(){			
+			var that = this;
+			//item.url = '../api/s/item/'+  this.model.get('itemid');
+
+
+			property.set({id: this.model.get('propertyid')});
+			property.fetch({
+				success: function(model, respone){
+					var data = {
+		                "category": model.get('propcat'),
+		                "property": model.get('descriptor'),
+		                "value": that.model.get('descriptor') //or code
+		            }
+		            that.$el.html(that.template(data));
+				}
+			});
+			return this;
+		}
+	});
+
 
 	var ProdpropsView = Backbone.View.extend({
 		el: '.items-tbody',
@@ -203,8 +246,14 @@ var prodprops = new Prodprops();
 		},
 		addOne: function(prodprop){
 
-			var prodpropView = new ProdpropView({model: prodprop});
+			//console.log(product.get('mode'));
+			if(product.get('mode')=='delete'){
+				var prodpropView = new ProdpropView2({model: prodprop});
+			} else {
+				var prodpropView = new ProdpropView({model: prodprop});	
+			}
 			this.$el.append(prodpropView.render().el);
+			
 			//return this;
 		},
 		addAll: function(){
@@ -429,7 +478,8 @@ var	ParentChildModal = Backbone.View.extend({
 		renderModelSelector: function(e){
 			var that = this;
 			var brandid = $('#brandid').val();
-			console.log(brandid);
+			
+			
 			
 
 			if(brandid!=undefined){
@@ -437,9 +487,12 @@ var	ParentChildModal = Backbone.View.extend({
 				modelsSelector.url = '../api/s/model?brandid='+ brandid;
 				modelsSelector.fetch({
 					success: function(collection, respone){
-						var model = collection.at(0).get('descriptor');
+						var model = collection.at(0).get('descriptor');						
 						var brand = $("#brandid option:selected").text();
+						var mdlid = collection.at(0).get('id')
 						
+						// auto fill modelid and descriptor onload
+						that.model.set({modelid: mdlid});			
 						// issue: fill desc if no desc OR overwrite existing?
 						if(that.model.get('descriptor')==undefined || that.model.get('descriptor')==''){
 							that.model.set({descriptor: brand +' '+ model});
@@ -447,8 +500,7 @@ var	ParentChildModal = Backbone.View.extend({
 					}
 				});
 			}
-			
-			
+						
 			var modelSelectsView = new ModelSelectsView({collection: modelsSelector});
 			modelSelectsView.render();	
 
@@ -462,7 +514,7 @@ var	ParentChildModal = Backbone.View.extend({
 			this.model.set({descriptor: brand +' '+ model});
 
 			//console.log($('option:selected', e.currentTarget).val());
-			this.model.set({descriptor: brand +' '+ model});
+			//this.model.set({descriptor: brand +' '+ model});
 			
 			// fires this.loadModelProps()
 			this.model.set({modelid: $('option:selected', e.currentTarget).val()}); 
@@ -536,8 +588,8 @@ var	ParentChildModal = Backbone.View.extend({
 										'</div>'; 
 		       			}
 		       			
-		       			//console.log($("#dropbox"));
 		       			$("#dropbox").html(template);
+		       			$(".dropbox-container2 .imageHolder img").attr('src', '../images/products/'+attrs[k]);
 		       			
 		       		}
 		        }   
@@ -686,19 +738,23 @@ var	ParentChildModal = Backbone.View.extend({
 			  				
 			  			} else if(respone.status==='warning'){
 			  				set_alert2(respone.status, 'Warning!', respone.message);
-			  			} else {
+			  			//} else if(respone.status==='success'){
+			  			} else if(!_.isEmpty(respone)){
 			  				if(isnew){
 			  					var showData = that.addTableData(respone);
 			  					console.log(showData);
+
 			  					addTableData2(showData);
 			  					
-								set_alert2('success','Well done!', 'Success on saving!');
+								set_alert2('success','Well done!', 'Success on creating: <em>'+ model.get('code') +' - '+ model.get('descriptor') +'</em>');
 							} else {
 								updateTableData3(respone);
 								set_alert2('success','Yeay!', 'Success on updating!');
 							}
 
 							that.collection.saveAll();
+			  			} else {
+			  				set_alert2('warning', 'Oooops!', 'Record did not save!');
 			  			}
 					}	
 			  	});
@@ -801,7 +857,7 @@ var	ParentChildModal = Backbone.View.extend({
 			$(".model-btn-save-blank").attr('disabled', true);
     	},
     	loadModelProps: function(){
-    		console.log('loadModelProps');
+    		console.log('loadModelProps');	
     		if(_.isEmpty(this.model.get('modelid'))){
     			console.log('modelid is empty');
     		} else {
@@ -821,6 +877,7 @@ var	ParentChildModal = Backbone.View.extend({
     		}
     	},
     	dataActionHide: function(){
+    		console.log(this.$el.find('.items-tbody'));
 		    $('.modal-tb-detail .tb-data-action').hide();
 		    $('.items-tbody .tb-data-action').hide();
 		    $('.modal-table-detail').hide();
@@ -837,8 +894,6 @@ var	ParentChildModal = Backbone.View.extend({
 		   	this.dataActionShow();
 		   	this.renderModelSelector();
 			this.model.set({mode: 'add', text: 'Add Record'});
-
-			//console.log(this.model);
     	},
     	modelInputsDisable: function(){
 			var attrs = { }, k;
@@ -847,6 +902,8 @@ var	ParentChildModal = Backbone.View.extend({
 		    }
 
 		    this.$el.find(".table-model .toggle").prop( "disabled", true );
+		    $('.dropbox-container').hide();
+		    $('.dropbox-container2').show();
 		},
 		modelInputsEnable: function(){
 			var attrs = { }, k;
@@ -854,6 +911,8 @@ var	ParentChildModal = Backbone.View.extend({
 		         this.$el.find(".table-model #"+k).prop("disabled", false );
 		    }
 		    this.$el.find(".table-model .toggle").prop( "disabled", false );
+		    $('.dropbox-container2').hide();
+		    $('.dropbox-container').show();
 		},
 
 	});
@@ -1024,25 +1083,32 @@ var DataGridView = Backbone.View.extend({
 			if(this.model.get('mode') == 'edit'){
 
 			} else {
-				this.model.set({mode: 'edit', text: 'Edit Record'});
+				this.model.set({mode: 'edit', text: 'Edit Record - Product'});
 			}
 			//console.log(this.options.settings.toJSON());
 			var id = $(e.currentTarget).parent().parent().parent().data('id');
-			this.model.set({'id':id});	
-			this.model.fetch({
-				beforeSend: function(){
-					//console.log('fetching: '+ id);
-				},
-				success: function(model, respone){
-					//console.log(respone)
-					//that.renderToFormForEdit(respone);
 
-					//var apvhdrView = new ParentChildModal({model: apvhdr, collection: apvdtls});
-					prodprops.reset();
-					prodprops.url = '../api/txn/prodprop/product/'+ model.get('id');
-					prodprops.fetch();			
-				}	
-			});	
+			if(this.model.get('id') == id){
+				console.log('same id as model');
+				// to render ProdpropsView2
+				prodprops.reset();
+				prodprops.url = '../api/txn/prodprop/product/'+ this.model.get('id');
+				prodprops.fetch();
+			} else {
+				this.model.set({'id':id});	
+				this.model.fetch({
+					beforeSend: function(){
+						//console.log('fetching: '+ id);
+					},
+					success: function(model, respone){
+
+						//var apvhdrView = new ParentChildModal({model: apvhdr, collection: apvdtls});
+						prodprops.reset();
+						prodprops.url = '../api/txn/prodprop/product/'+ model.get('id');
+						prodprops.fetch();			
+					}	
+				});	
+			}
 			//console.log(this.model.toJSON());
 			//$(".modal .modal-title").text('Edit');
 			$("#mdl-frm-product").modal('show');  
@@ -1056,25 +1122,31 @@ var DataGridView = Backbone.View.extend({
 			if(this.model.get('mode') == 'delete'){
 
 			} else {
-				this.model.set({mode: 'delete', text: 'Delete Record'});
+				this.model.set({mode: 'delete', text: 'Delete Record - Product'});
 			}
 			//console.log(this.options.settings.toJSON());
 			var id = $(e.currentTarget).parent().parent().parent().data('id');
-			this.model.set({'id':id});	
-			this.model.fetch({
-				beforeSend: function(){
-					//console.log('fetching: '+ id);
-				},
-				success: function(model, respone){
-					//console.log(respone)
-					//that.renderToFormForEdit(respone);
+			if(this.model.get('id') == id){
+				console.log('same id as model');
+				// to render ProdpropsView2
+				prodprops.reset();
+				prodprops.url = '../api/txn/prodprop/product/'+ this.model.get('id');
+				prodprops.fetch();
+			} else {
+				this.model.set({'id':id});	
+				this.model.fetch({
+					beforeSend: function(){
+						//console.log('fetching: '+ id);
+					},
+					success: function(model, respone){
 
-					//var apvhdrView = new ParentChildModal({model: apvhdr, collection: apvdtls});
-					prodprops.reset();
-					prodprops.url = '../api/txn/prodprop/product/'+ model.get('id');
-					prodprops.fetch();			
-				}		
-			});	
+						//var apvhdrView = new ParentChildModal({model: apvhdr, collection: apvdtls});
+						prodprops.reset();
+						prodprops.url = '../api/txn/prodprop/product/'+ model.get('id');
+						prodprops.fetch();			
+					}		
+				});	
+			}
 			//console.log(this.model.toJSON());
 			//$(".modal .modal-title").text('Edit');
 			$("#mdl-frm-product").modal('show');
@@ -1088,7 +1160,7 @@ var DataGridView = Backbone.View.extend({
 			if(this.model.get('mode') == 'delete'){
 
 			} else {
-				this.model.set({mode: 'delete', text: 'Delete Record'});
+				this.model.set({mode: 'delete', text: 'Delete Record - '});
 			}
 			//console.log(this.options.settings.toJSON());
 			var id = $(e.currentTarget).parent().parent().parent().data('id');

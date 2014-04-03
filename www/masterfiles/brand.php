@@ -61,6 +61,7 @@ include_once('../../lib/initialize.php');
 </script>
 
 <script type="text/template" id="modal-brand-readonly-tpl">
+<form id="frm-mdl-brand" name="frm-mdl-brand" class="table-model" data-table="brand" action="" method="post">
 	<table cellpadding="5px" cellspacing="0" border="0">
 	<tbody>
 		<tr>
@@ -73,6 +74,7 @@ include_once('../../lib/initialize.php');
 		</tr>
 		</tbody>
 	</table>
+</form>
 </script>
 
 

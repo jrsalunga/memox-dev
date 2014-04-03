@@ -26,6 +26,7 @@ _.extend(Backbone.Validation.callbacks, {
 var ModalBodyView = Backbone.View.extend({
 	el: '.modal-dialog',
 	initialize: function() {
+		this.uicaption = '';
 		// Initialize 
 		//Backbone.Validation.bind(this);
 		//this.modalTitle = this.$('.modal-title');
@@ -80,7 +81,8 @@ var ModalBodyView = Backbone.View.extend({
 		if(this.model.isValid(true)){
 			clear_alert();
 			this.model.unset('mode', {silent: true}); //remove the added model field
-			this.model.unset('text', {silent: true}); 
+			this.model.unset('text', {silent: true});
+			this.model.unset('uicaption', {silent: true});  
 			console.log(this.model.toJSON());
 			this.model.save({},{
 		  		success: function(model, respone){
@@ -240,12 +242,8 @@ var DataGridView = Backbone.View.extend({
 		rowEdit: function(e){
 			e.preventDefault();
 			e.stopPropagation();
-			var that = this;
-			var tb = $(".table-model").data('table');
-			console.log(tb);
-			//tb = capitaliseFirstLetter(tb);
-			//this.model.set({mode: 'edit', text: tb + ': Edit Record'});
-			this.model.set({mode: 'edit', text: 'Edit Record'});
+			var uicaption = this.model.get('uicaption');
+			this.model.set({mode: 'edit', text: 'Edit Record - '+ uicaption });
 			//console.log(this.options.settings.toJSON());
 			var id = $(e.currentTarget).parent().parent().parent().data('id');
 
@@ -270,7 +268,9 @@ var DataGridView = Backbone.View.extend({
 			e.stopPropagation();
 			var that = this;
 
-			this.model.set({mode: 'delete', text: 'Delete Record'});
+			var uicaption = this.model.get('uicaption');
+			this.model.set({mode: 'edit', text: 'Delete Record - '+ uicaption });
+			//this.model.set({mode: 'delete', text: 'Delete Record'});
 			//console.log(this.options.settings.toJSON());
 			var id = $(e.currentTarget).parent().parent().parent().data('id');
 			this.model.set({'id':id});	
@@ -306,6 +306,7 @@ var DataGridView = Backbone.View.extend({
 
 var BrandModal = ModalBodyView.extend({
 	initialize: function() {
+		this.model.set({uicaption : 'Brand'}, {silent: true});
 		this.modalTitle = this.$('.modal-title');
 		this.model.on('change', this.render, this);
 		this.template = _.template($('#modal-brand-tpl').html());
@@ -315,6 +316,7 @@ var BrandModal = ModalBodyView.extend({
 
 var ModelModal = ModalBodyView.extend({
 	initialize: function() {
+		this.model.set({uicaption : 'Model'}, {silent: true});
 		this.modalTitle = this.$('.modal-title');
 		this.model.on('change', this.render, this);
 		this.template = _.template($('#modal-model-tpl').html());
@@ -324,6 +326,7 @@ var ModelModal = ModalBodyView.extend({
 
 var PropcatModal = ModalBodyView.extend({
 	initialize: function() {
+		this.model.set({uicaption : 'Property Category'}, {silent: true});
 		this.modalTitle = this.$('.modal-title');
 		this.model.on('change', this.render, this);
 		this.template = _.template($('#modal-propcat-tpl').html());
@@ -333,6 +336,7 @@ var PropcatModal = ModalBodyView.extend({
 
 var PropertyModal = ModalBodyView.extend({
 	initialize: function() {
+		this.model.set({uicaption : 'Property'}, {silent: true});
 		this.modalTitle = this.$('.modal-title');
 		this.model.on('change', this.render, this);
 		this.template = _.template($('#modal-property-tpl').html());
@@ -342,6 +346,7 @@ var PropertyModal = ModalBodyView.extend({
 
 var ItemcatModal = ModalBodyView.extend({
 	initialize: function() {
+		this.model.set({uicaption : 'APV Item Category'}, {silent: true});
 		this.modalTitle = this.$('.modal-title');
 		this.model.on('change', this.render, this);
 		this.template = _.template($('#modal-itemcat-tpl').html());
@@ -351,6 +356,7 @@ var ItemcatModal = ModalBodyView.extend({
 
 var ItemModal = ModalBodyView.extend({
 	initialize: function() {
+		this.model.set({uicaption : 'APV Item'}, {silent: true});
 		this.modalTitle = this.$('.modal-title');
 		this.model.on('change', this.render, this);
 		this.template = _.template($('#modal-item-tpl').html());
@@ -360,6 +366,7 @@ var ItemModal = ModalBodyView.extend({
 
 var ProdcatModal = ModalBodyView.extend({
 	initialize: function() {
+		this.model.set({uicaption : 'Product Category'}, {silent: true});
 		this.modalTitle = this.$('.modal-title');
 		this.model.on('change', this.render, this);
 		this.template = _.template($('#modal-matcat-tpl').html());
@@ -369,6 +376,7 @@ var ProdcatModal = ModalBodyView.extend({
 
 var ProductModal = ModalBodyView.extend({
 	initialize: function() {
+		this.model.set({uicaption : 'Product'}, {silent: true});
 		this.modalTitle = this.$('.modal-title');
 		this.model.on('change', this.render, this);
 		this.template = _.template($('#modal-material-tpl').html());
@@ -378,6 +386,7 @@ var ProductModal = ModalBodyView.extend({
 
 var SupplierModal = ModalBodyView.extend({
 	initialize: function() {
+		this.model.set({uicaption : 'Supplier'}, {silent: true});
 		this.modalTitle = this.$('.modal-title');
 		this.model.on('change', this.render, this);
 		this.template = _.template($('#modal-supplier-tpl').html());
@@ -388,6 +397,7 @@ var SupplierModal = ModalBodyView.extend({
 var BankModal = ModalBodyView.extend({
 	initialize: function() {
 		Backbone.Validation.bind(this);
+		this.model.set({uicaption : 'Bank'}, {silent: true});
 		this.modalTitle = this.$('.modal-title');
 		this.model.on('change', this.render, this);
 		this.template = _.template($('#modal-bank-tpl').html());

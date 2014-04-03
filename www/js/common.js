@@ -28,7 +28,7 @@ $(document).ready(function() {
 	
 	$(".table-model input[type=checkbox].toggle").on('click', function(){
 		
-		//console.log($(this).data('input'));
+		console.log($(this).data('input'));
 		var i = $(this).data('input');
 		console.log(i);
 		if($(this).attr('checked')){

@@ -346,15 +346,16 @@
 		    	});	
 		    	console.log(aProduct);
 
-		    	var prodContent = '<div class="product-profile"><h3>'+ aProduct.brand +' '+ aProduct.model +'</h3>';
+		    	var prodContent = '<div class="product-breadcrumb">'+ aProduct.type +' / '+ aProduct.category +'<div>';
+		    	prodContent += '<div class="product-profile"><h3>'+ aProduct.brand +' '+ aProduct.model +'</h3>';
 		    	prodContent += '<div class="product-profile-lpane">';
 		    	prodContent += '<div class="img-holder">';
 		    	prodContent += '<img src="../images/products/'+ aProduct.picfile +'"></div>';
 		    	prodContent += '<ul>';
 		    	prodContent += '<li>'+ aProduct.code +'</li>';
 		    	prodContent += '<li>'+ aProduct.descriptor +'</li>';
-		    	prodContent += '<li>'+ aProduct.category +'</li>';
-		    	prodContent += '<li>'+ aProduct.type +'</li>';
+		    	//prodContent += '<li>'+ aProduct.category +'</li>';
+		    	//prodContent += '<li>'+ aProduct.type +'</li>';
 		    	prodContent += '';
 		    	prodContent += '';
 		    	prodContent += '</ul>';
