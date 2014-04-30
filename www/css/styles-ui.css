@@ -173,6 +173,7 @@ button.minibutton[disabled]:hover {
 
 .table-model select {
 	padding-right: 25px;
+	max-width: 200px;
 }
 
 .table-model table {

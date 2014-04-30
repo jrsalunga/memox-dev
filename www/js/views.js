@@ -240,6 +240,7 @@ var DataGridView = Backbone.View.extend({
 			}
 		},
 		rowEdit: function(e){
+			var that = this;
 			e.preventDefault();
 			e.stopPropagation();
 			var uicaption = this.model.get('uicaption');
@@ -609,7 +610,7 @@ var ModelpropView2 = Backbone.View.extend({
 var ModelpropsView2 = Backbone.View.extend({
 		el: '.items-tbody2',
 		initialize: function(){
-			//console.log(this.collection);
+			console.log(this.collection);
 
 			this.collection.on('reset', this.addAll, this);
 			this.collection.on('add', this.addOne, this);

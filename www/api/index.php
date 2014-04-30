@@ -109,7 +109,7 @@ $app->put('/post/detail/:table/:table2/:apvhdrid', 'putDetpostDetailail');
 $app->post('/txn/post/apvhdr/:id', 'postingApvhdr');
 $app->post('/txn/post/apvhdr/:id/cancelled', 'postingCancelledApvhdr');
 
-$app->get('/txn/v/:child/:parent/:id', 'getChildTable');
+$app->get('/txn/v/:child/:parent/:id', 'getvChildTable');
 $app->get('/txn/:child/:parent/:id', 'getChildTable');
 $app->get('/txn/delete/:child/:parent/:id', 'deleteChildTable'); 
 $app->delete('/txn/:child/:parent/:id', 'deleteChildTable'); 
@@ -117,10 +117,44 @@ $app->delete('/txn/:child/:parent/:id', 'deleteChildTable');
 $app->get('/property/all/:productid/:modelid', 'getAllProperty'); 
 
 
+$app->get('/txn/p/:parent/:child/:id', 'getParentChild');
+$app->get('/txn/pv/:parent/:child/:id', 'getViewParentChild');
+
+
 
 
  /*****************************  Run App **************************/
 $app->run();
+
+function getParentChild($parent, $child, $id){
+
+        $pTable = ucfirst($parent);
+        $cTable = ucfirst($child);
+        $p = $pTable::find_by_id($id);
+        if($p){
+            $c = $cTable::find_all_by_field_id($parent, $id);
+            $p->data =  $c;
+        }
+        echo json_encode($p);
+}
+
+function getViewParentChild($parent, $child, $id){
+
+        global $database;
+
+        $pTable = ucfirst($parent);
+        $pvTable = substr_replace($pTable, 'v', 0, 0);
+        $cTable = ucfirst($child);
+        $cvTable = substr_replace($cTable, 'v', 0, 0);
+        $p = $pvTable::find_by_id($id);
+        if($p){
+            $c = $cvTable::find_all_by_field_id($parent, $id);
+            $p->$child =  $c;
+        }
+        
+
+        echo json_encode($p);
+}
 
 function getAllProperty($productid, $modelid){
 
@@ -148,6 +182,15 @@ function getAllProperty($productid, $modelid){
 
     echo json_encode($objs);
     
+}
+
+function getvChildTable($child, $parent, $id){
+
+    $cTable = ucfirst($child);
+    $cvTable = substr_replace($cTable, 'v', 0, 0);
+    $oTable = $cvTable::find_all_by_field_id($parent, $id);
+
+    echo json_encode($oTable);
 }
 
 function getChildTable($child, $parent, $id){

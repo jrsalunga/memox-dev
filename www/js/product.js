@@ -490,9 +490,9 @@ var	ParentChildModal = Backbone.View.extend({
 						var model = collection.at(0).get('descriptor');						
 						var brand = $("#brandid option:selected").text();
 						var mdlid = collection.at(0).get('id')
-						
+						console.log('mdlid : '+ mdlid);
 						// auto fill modelid and descriptor onload
-						that.model.set({modelid: mdlid});			
+						that.model.set({modelid: mdlid}, {silent: true});			
 						// issue: fill desc if no desc OR overwrite existing?
 						if(that.model.get('descriptor')==undefined || that.model.get('descriptor')==''){
 							that.model.set({descriptor: brand +' '+ model});
@@ -560,6 +560,7 @@ var	ParentChildModal = Backbone.View.extend({
 				//console.log(k+' - '+attrs[k]);
 		        if(k=='modelid'){
 		        	//if(this.model)
+		        	console.log(k+' - '+attrs[k]);
 		        	this.renderModelSelector();
 		        } else if(k=='serialized'){
 		        	
@@ -857,10 +858,12 @@ var	ParentChildModal = Backbone.View.extend({
 			$(".model-btn-save-blank").attr('disabled', true);
     	},
     	loadModelProps: function(){
+    		var that = this;
     		console.log('loadModelProps');	
     		if(_.isEmpty(this.model.get('modelid'))){
     			console.log('modelid is empty');
     		} else {
+    			console.log(this.model.get('modelid'));
     			this.$el.find('.items-tbody2').html('');
     			var modelprops = new Modelprops();
 			    modelprops.reset();
@@ -1057,7 +1060,7 @@ var DataGridView = Backbone.View.extend({
 			this.model.set({'id':id});	
 			this.model.fetch({
 				beforeSend: function(){
-					//console.log('fetching: '+ id);
+						console.log('fetching: '+ id);
 				}	
 			});	
 		},

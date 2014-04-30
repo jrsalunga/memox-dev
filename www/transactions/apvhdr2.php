@@ -41,7 +41,7 @@ include_once('../../lib/initialize.php');
 <script src="../js/category.js"></script>
 <script src="../js/models.js"></script>
 <script src="../js/views.js"></script>
-<script src="../js/apvhdr.js"></script>
+<script src="../js/apvhdr2.js"></script>
 
 <!--
 <script src="../js/app-menu.js"></script>
@@ -201,17 +201,17 @@ $(document).ready(function(e) {
 	var appRouter = new Router();
 	var appView = new AppView({model: app});
 	
-	var apvhdrView = new ParentChildModal({model: apvhdr, collection: apvdtls});
+	var apvhdrView = new ParentChildModal({model: apvhdr, settings: modalSettings});
 	
-	
+	/*
 	var detailView = new ModalDetailView({model: apvhdr, collection: apvdtls});
 	detailView.render();
 
 	var formDetailView = new FormDetailView({model: apvdtl, collection: apvdtls});
 	formDetailView.render();
+	*/
 	
-	
-	var apvhdrDataGridView = new DataGridView({model: apvhdr, collection: apvdtls});
+	var apvhdrDataGridView = new DataGridView({model: apvhdr, settings: modalSettings});
 	
 	
 	
@@ -574,11 +574,49 @@ $(document).ready(function(e) {
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title"></h4>
+          <h4 class="modal-title">Add Record</h4>
         </div>
+        <form id="frm-mdl-apvhdr" name="frm-mdl-apvhdr" class="table-model" data-table="apvhdr" action="" method="post">
         <div class="modal-body">
         	<div class="modal-parent-child">
                 <div class="modal-body-parent">
+                		
+                    <table cellpadding="5px" cellspacing="0" border="0" >
+                        <tbody>
+                            <tr>
+                                <td><label for="refno">Reference No: </label></td>
+                                <td><input type="text" name="refno" id="refno" maxlength="20" required></td>
+                                
+                                <td><label for="date">Date:</label></td>
+                                <td><input type="date" name="date" id="date"  placeholder="yyyy-mm-dd"></td>
+                            </tr>
+                            <tr>
+                                <td><label for="supplier">Supplier:</label></td>
+                                <td>
+                                    <input type="text" id="supplier" role="search" class="search-field">
+                                    <input type="hidden" name="supplierid"  id="supplierid" />
+                                </td>
+                                
+                                <td><label for="supprefno">Supplier Ref No:</label></td>
+                                <td><input type="text" name="supprefno" id="supprefno" ></td>
+                            </tr>
+                            <tr>
+                                <td><label for="porefno">PO Ref No:</label></td>
+                                <td><input type="text" name="porefno" id="porefno"></td>
+                                
+                                <td><label for="terms">Terms:</label></td>
+                                <td><input type="text" name="terms" id="terms"></td>
+                            </tr>
+                            <tr>
+                                <td><label for="totamount">Total Amount:</label></td>
+                                <td><input type="text" name="totamount" id="totamount" class="currency"></td>
+                                
+                                <td><label for="balance">Balance:</label></td>
+                                <td><input type="text" name="balance" id="balance" class="currency" ></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                
                 </div>
                 <div class="modal-body-child">
                 </div>
@@ -587,12 +625,12 @@ $(document).ready(function(e) {
            	</div>
         </div>
         <div class="modal-footer">
-          <!--
-          <button type="button" id="mdl-btn-save" class="btn btn-primary model-btn-save" data-dismiss="modal" disabled>Save</button>
-          <button type="button" is="mdl-btn-save-blank" class="btn btn-primary model-btn-save-blank" disabled>Save &amp; Blank</button>
-          <button type="button" id="mdl-btn-save" class="btn btn-default model-btn-cancel" data-dismiss="modal" disabled>Cancel</button>
-        	-->
+          
+          <button type="submit" id="mdl-btn-save" class="btn btn-primary">Save</button>
+          <button type="button" id="mdl-btn-save" class="btn btn-default model-btn-cancel" data-dismiss="modal">Cancel</button>
+        
         </div>
+        </form>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->

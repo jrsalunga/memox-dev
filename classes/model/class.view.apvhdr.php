@@ -6,7 +6,7 @@ require_once(ROOT.DS.'classes'.DS.'database.php');
 class vApvhdr extends DatabaseObject{
 	
 	protected static $table_name="vapvhdr";
-	protected static $db_fields = array('id', 'refno' ,'date' ,'supplier', 'supplierid' ,'supprefno' ,'porefno' ,'terms' ,'totamount' ,'balance' ,'notes' ,'posted' ,'cancelled' ,'printctr' ,'totline' );
+	protected static $db_fields = array('id', 'refno' ,'date', 'valuedate',  'due' ,'supplier', 'supplierid' ,'supprefno' ,'porefno' ,'terms' ,'totamount' ,'balance' ,'notes' ,'posted' ,'cancelled' ,'printctr' ,'totline' );
 	
 	/*
 	* Database related fields
@@ -14,6 +14,8 @@ class vApvhdr extends DatabaseObject{
 	public $id;
 	public $refno;
 	public $date;
+	public $valuedate;
+	public $due;
 	public $supplier;
 	public $supplierid;
 	public $supprefno;

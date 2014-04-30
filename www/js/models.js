@@ -232,6 +232,57 @@ var item = new Item();
 
 
 
+var Acctcat = Backbone.Model.extend({
+	urlRoot: "../api/s/acctcat",
+	defaults: {
+		code: '',
+		descriptor: ''
+	}, 
+	validation: {
+		code: {
+	    	required: true,
+			msg: 'Please enter a value'
+	   	}
+	},
+	unset: function(attr, options) {
+	  (options || (options = {})).unset = true;
+	  return this.set(attr, null, options);
+	},
+	blank: function(){
+		this.clear();
+		return this.defaults;
+	}
+});
+var acctcat = new Acctcat();
+//var itemcat = new Itemcat({code: '001', descriptor: 'Ply Board'});
+
+//APV Item
+var Account = Backbone.Model.extend({
+	urlRoot: "../api/t/account",
+	defaults: {
+		code: '',
+		descriptor: '',
+		itemcatid: ''
+	}, 
+	validation: {
+		code: {
+	    	required: true,
+			msg: 'Please enter a value'
+	   	}
+	},
+	unset: function(attr, options) {
+	  (options || (options = {})).unset = true;
+	  return this.set(attr, null, options);
+	},
+	blank: function(){
+		this.clear();
+		return this.defaults;
+	}
+});
+var account = new Account(); 
+
+
+
 var Prodcat = Backbone.Model.extend({
 	urlRoot: "../api/s/prodcat",
 	defaults: {

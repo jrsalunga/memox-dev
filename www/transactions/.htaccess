@@ -5,6 +5,7 @@ RewriteEngine on
 RewriteRule ^apvhdr(\/.*)*$ /transactions/apvhdr.php
 RewriteRule ^check(\/.*)*$ /transactions/index.php
 RewriteRule ^invoice(\/.*)*$ /transactions/index.php
+RewriteRule ^apvhdr2(\/.*)*$ /transactions/apvhdr2.php
 
 
 

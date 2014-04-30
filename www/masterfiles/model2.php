@@ -78,7 +78,7 @@ include_once('../../lib/initialize.php');
                             $matcats = Brand::find_all();
                                                 
                             foreach( $matcats as  $matcat) {                        
-                               echo "<option value=\"".strtolower($matcat->id)."\">". $matcat->descriptor ."</option>";
+                               echo "<option value=\"".$matcat->id."\">". $matcat->descriptor ."</option>";
                             }  
                             
                         ?>

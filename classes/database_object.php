@@ -11,6 +11,10 @@ class DatabaseObject {
 	
 	protected static $table_name="category";
 	protected static $db_fields = array('id', 'code', 'descriptor', 'type');
+	
+	public function toJSON(){
+		return json_encode($this);	
+	}
 
 	
 	public static function find_all($order=NULL) {
@@ -43,7 +47,8 @@ class DatabaseObject {
 		if(!is_uuid($id) && $id==NULL) {
 			return false;
 		} else {
-   			$result_array = static::find_by_sql("SELECT * FROM ".static::$table_name." WHERE {$field}id='{$id}'");
+			$sql = "SELECT * FROM ".static::$table_name." WHERE {$field}id='{$id}'";
+   			$result_array = static::find_by_sql($sql);
 			return !empty($result_array) ? $result_array : false;
 		}
   	}
