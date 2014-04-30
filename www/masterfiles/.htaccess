@@ -22,8 +22,8 @@ RewriteRule ^product(\/.*)*$ /masterfiles/product.php
 RewriteRule ^propcat(\/.*)*$ /masterfiles/propcat.php
 RewriteRule ^property(\/.*)*$ /masterfiles/property.php
 RewriteRule ^brand(\/.*)*$ /masterfiles/brand.php
-#RewriteRule ^model(\/.*)*$ /masterfiles/model.php
-RewriteRule ^model(\/.*)*$ /masterfiles/model2.php
+RewriteRule ^model(\/.*)*$ /masterfiles/model.php
+#RewriteRule ^model(\/.*)*$ /masterfiles/model2.php
 RewriteRule ^itemcat(\/.*)*$ /masterfiles/itemcat.php
 RewriteRule ^item(\/.*)*$ /masterfiles/item.php
 

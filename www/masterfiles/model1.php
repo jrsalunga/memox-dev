@@ -1,7 +1,8 @@
-﻿<?php
+<?php
 include_once('../../lib/initialize.php');
 !$session->is_logged_in() ? redirect_to("../../login"): "";
 ?>
+
 <!DOCTYPE HTML>
 <html lang="en-ph">
 <head>
@@ -16,11 +17,9 @@ include_once('../../lib/initialize.php');
 <link rel="stylesheet" href="../css/main-ui.css">
 
 
-
 <script src="../js/vendors/jquery-1.10.1.min.js"></script>
-<script src="../js/vendors/jquery-ui-1.10.3.js"></script>
+<script src="../js/vendors/jquery-ui-1.8.min.js"></script>
 <!--
-<script src="../js/vendors/jquery-ui-1.10.3.js"></script>
 <script src="../js/vendors/jquery-1.9.1.js"></script>
 <script src="js/vendors/underscore-min.js"></script>
 <script src="js/vendors/backbone-min.js"></script>
@@ -33,37 +32,38 @@ include_once('../../lib/initialize.php');
 <script src="../js/vendors/jquery.dataTables.min.js"></script>
 <script src="../js/vendors/backbone-validation-min.js"></script>
 <script src="../js/vendors/NumberFormat154.js"></script>
-<script src="../js/vendors/moment.2.1.0-min.js"></script>
-<script src="../js/vendors/accounting.js"></script>
-<script src="../js/vendors/jquery.filedrop.js"></script>
-<script src="../js/vendors/upload-image.js"></script>
 <script src="../js/common.js"></script>
 <script src="../js/app-menu.js"></script>
 <script src="../js/main-ui.js"></script>
 <script src="../js/app-ui.js"></script>
 <script src="../js/category.js"></script>
 <script src="../js/models.js"></script>
-<script src="../js/collections.js"></script>
 <script src="../js/views.js"></script>
-<script src="../js/model.js"></script>
-
 <!--
 <script src="../js/app-menu.js"></script>
 
 -->
 
 
+
+
+
+
+
+
+
+
 <script type="text/template" id="modal-model-tpl">
-	<form id="frm-mdl-model" name="frm-mdl-model" class="table-model" data-table="model" action="" method="post" style="margin-top: 20px;">	
+	<form id="frm-mdl-model" name="frm-mdl-model" class="table-model" data-table="model" action="" method="post">	
     	<table cellpadding="5px" cellspacing="0" border="0">
         	<tbody>
             	<tr>
                 	<td><label for="code">Code: </label></td>
-                    <td><input type="text" name="code" id="code" maxlength="20" required></td>
+                    <td><input type="text" name="code" id="code" maxlength="20" value="<%= code %>" required></td>
             	</tr>
                 <tr>
                 	<td><label for="descriptor">Descriptor:</label></td>
-                    <td><input type="text" name="descriptor" id="descriptor" maxlength="50" class="m-input" </td>
+                    <td><input type="text" name="descriptor" id="descriptor" maxlength="50" class="m-input" value="<%= descriptor %>"></td>
          		</tr>
 				<tr>
                     <td><label for="matcatid">Brand:</label></td>
@@ -78,7 +78,7 @@ include_once('../../lib/initialize.php');
                             $matcats = Brand::find_all();
                                                 
                             foreach( $matcats as  $matcat) {                        
-                               echo "<option value=\"".$matcat->id."\">". $matcat->descriptor ."</option>";
+                               echo "<option value=\"".strtolower($matcat->id)."\">". $matcat->descriptor ."</option>";
                             }  
                             
                         ?>
@@ -91,132 +91,67 @@ include_once('../../lib/initialize.php');
  	</form>
 </script>
 
-
-
-<script type="text/template" id="modal-modelprops-tpl">
-	<table class="modal-tb-detail" cellpadding="0" cellspacing="0" width="100%" border="0">
-	<thead>
-		<tr>
-			<th>Category</th>
-			<th>Property</th>
-			<th>Value
-	<tbody class="items-tbody">
-	
-	</tbody>
-	</table>
+<script type="text/template" id="modal-model-readonly-tpl">
+	<form class="table-model-delete">
+    <table cellpadding="5px" cellspacing="0" border="0">
+            <tbody>
+                <tr>
+                    <td><label for="code">Code: </label></td>
+                    <td><input type="text" name="code" id="code" maxlength="20" value="<%= code %>"  readonly></td>
+                </tr>
+                <tr>
+                    <td><label for="descriptor">Descriptor:</label></td>
+                    <td><input type="text" name="descriptor" id="descriptor" maxlength="50" class="m-input" value="<%= descriptor %>" readonly></td>
+                </tr>
+                <tr>
+                    <td><label for="itemcat">Category: </label></td>
+                    <td><input type="text" name="brand" id="brand" maxlength="20" class="m-input"  value="<%= brand %>"  readonly>     </td>
+                </tr>
+        
+            </tbody>
+        </table>
+    </form>
 </script>
 
 
-<script type="text/template" id="modal-items-tpl">
-<form class="modal-table-detail">
-	<input type="hidden" name="id" id="id">
-	<input type="hidden" name="propertyid" id="propertyid">
-	
-	
-	<span class="search-detail-icon"></span>
-	<input type="text" class="search-detail" placeholder="Search property" >
-	
-	<input type="text" name="descriptor" id="descriptor" placeholder="Property value">
-	<button type="button" id="mdl-detail-save-item" class="btn btn-primary btn-sm">Add</button>
-<!--	<button type="button" id="mdl-detail-cancel-item" class="btn btn-default btn-sm">Cancel</button>  -->
-</form>
-</script>
 
+
+<script type="text/template" id="menu-tpl">
+	<div class="bb">
+		<div class="Sj"></div>
+		<div class="yb"></div>
+		<div class="kk"><%= name %></div>
+	</div>
+	<ul class="fd">
+		<% _.each(sub, function(element){ %>
+			
+			<li><a href="<%= element.name %>.php" ><%= element.name %></a></li>
+		<% }) %>
+	</ul>
+</script>
+<!-- <li <% if(element.class === 'active') { %>  class="active" <%}  %> ><a href="<%= element.name %>.php" ><%= element.name %></a></li> -->
 
 
 <script>
 var oTable;
 
-function log( message ) {
-     //  $( "<div>" ).text( message ).appendTo( "#log" );
-	$("#log").text(message);
-	//$( "#log" ).scrollTop( 0 );
-}
-function itemSearch(){
-	 $(".search-detail").autocomplete({
-            source: function( request, response ) {
-                $.ajax({
-					type: 'GET',
-					url: "../api/search/vproperty",
-                    dataType: "json",
-                    data: {
-                        maxRows: 25,
-                        q: request.term
-                    },
-                    success: function( data ) {
-                        response( $.map( data, function( item ) {
-                            return {
-                                label: item.code + ' - ' + item.descriptor,
-                                value: item.descriptor,
-								id: item.id
-                            }
-                        }));
-                    }
-                });
-            },
-            minLength: 2,
-            select: function( event, ui ) {
-				//console.log(ui);
-                log( ui.item ? "Selected: " + ui.item.label : "Nothing selected, input was " + this.value);
-	
-				$("#propertyid").val(ui.item.id); /* set the selected id */
-				$(".search-detail-icon").addClass("success");
-				
-            },
-            open: function() {
-                $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
-				$("#propertyid").val('');  /* remove the id when change item */
-				$(".search-detail-icon").removeClass("success");
-            },
-            close: function() {
-                $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
-            },
-			messages: {
-				noResults: '',
-				results: function() {}
-			}
-			
-       });
-}
 
 $(document).ready(function(e) {
 	
-	
-	
-	//$('#mdl-frm-product').modal('show');
-	//$(".modal .modal-title").text('Add Product');
-	
-	// $('#productTab a:last').tab('show')
-	
-	//var appRouter = new Router();
+	var appRouter = new Router();
 	var appView = new AppView({model: app});
 	
 	
-	//var productView = new ParentChildModal({model: product, collection: prodprops});
-	var modelView = new ParentChildModal({model: model, collection: modelprops});
-	console.log(modelView.el);
-	
+	var modelModal = new ModelModal({ model: model });
 
-	
-	//var detailView = new ModalDetailView({model: product, collection: prodprops});
-	var detailView = new ModalDetailView({model: model, collection: modelprops});
-	detailView.render();
-
-	//var formDetailView = new FormDetailView({model: prodprop, collection: prodprops});
-	var formDetailView = new FormDetailView({model: modelprop, collection: modelprops});
-	formDetailView.render();
-	
-	
-	//var productDataGridView = new DataGridView({model: product, collection: prodprops});
-	var productDataGridView = new DataGridView({model: model, collection: modelprops});
-	
-	
-	
+	modelModal.render();
+	//console.log(itemcatModalView.el);
+	var modelDataGridView = new DataGridView({model: model });
 
 	$('#tlbr-new').on('click', function(){
-		modelView.modalTitle.text('Add Record');
-		modelView.clearForm();
-		
+		//$(".modal .modal-title").text('Add');
+		modelModal.modalTitle.text('Add Record');
+		modelModal.clearForm();
 		btn = '<button type="button" id="modal-btn-save" class="btn btn-primary model-btn-save" data-dismiss="modal" disabled>Save</button>';
         btn += '<button type="button" id="modal-btn-save-blank" class="btn btn-primary model-btn-save-blank" disabled>Save &amp; Blank</button>';
         btn += '<button type="button" id="modal-btn-cancel" class="btn btn-default model-btn-cancel" data-dismiss="modal">Cancel</button>';
@@ -230,7 +165,8 @@ $(document).ready(function(e) {
 	
 	
 	
-	itemSearch();
+	
+	
 	
 	
 	oTable = $('.tb-data').dataTable( {
@@ -241,9 +177,12 @@ $(document).ready(function(e) {
 	//	"sAjaxSource": "../www/test/datatable_test.php"
 		"fnHeaderCallback":  function( nHead, aData, iStart, iEnd, aiDisplay ) { 
 				
-				//for(i=0; i<=$('th', nHead).length-1; i++) {
-				//	$('th', nHead).removeAttr('style');
+				//var title = [,"Code","Descriptor"];
+				//console.log(title.length);
+				//for(i=0; i<=title.length-1; i++) {
+				//	$('th:eq('+ i +')', nHead).text(title[i]);
 				//}		
+				
 			},
 		"aoColumns": [
 			//{   "sTitle": "<input type='checkbox' class='select-all'></input>","mDataProp": null, "sWidth": "20px", "sDefaultContent": "<input type='checkbox' ></input>", "bSortable": false},
@@ -262,10 +201,13 @@ $(document).ready(function(e) {
         	}
     });
 	
-		
+	
+	
+	
+	
 	
 	$("#tlbr-new").on('click', function(){
-			$("#mdl-frm-model .modal-title").text('Add Model');
+			$("#mdl-frm-category .modal-title").text('Add Products');
 	});
 	
 	$("#tlbr-refresh-datatable").on('click', function(){
@@ -277,17 +219,6 @@ $(document).ready(function(e) {
 	$(".tlbr-refresh").on('click', function(){
 			oTable.fnDraw();
 	});
-	
-	
-	$(".modal-table-detail #id").bind('DOMSubtreeModified', function() {
-   		//console.log("DOMSubtreeModified");
-		var id = $(".modal-table-detail #id").val();
-		if(id == undefined || id == null || id == '') {
-			
-		} else {
-			
-		}
- 	});
 	
 	
 	
@@ -396,12 +327,12 @@ $(document).ready(function(e) {
 			
 			<header>
             	<div class="mod-name">
-                	<h1>Model</h1>
+                	<h1>Models</h1>
                     <nav id="breadcrum">
 						<ul>
 							<li><a href="../">Home</a></li>
 							<li><a href="../../masterfiles">Masterfiles</a></li>
-							<li>Model</li>
+							<li>Models</li>
 						</ul>
                     </nav>
                 </div>
@@ -453,7 +384,7 @@ $(document).ready(function(e) {
                     	<button id="tlbr-new" class="toolbar-minibutton" data-target="#mdl-frm-itemcat" data-toggle="modal" type="button" title="Create New Record">New</button>
                         <button id="tlbr-refresh-datatable" class="toolbar-minibutton" type="button" title="Refresh Datatable">Refresh</button>
                         -->
-                        <button id="tlbr-new" class="toolbar-minibutton" data-target="#mdl-frm-model" data-toggle="modal" type="button" title="Create New Record"><div class="tlbr-new">&nbsp;</div></button>
+                        <button id="tlbr-new" class="toolbar-minibutton" data-target="#mdl-frm-itemcat" data-toggle="modal" type="button" title="Create New Record"><div class="tlbr-new">&nbsp;</div></button>
                         <button id="tlbr-refresh-datatable" class="toolbar-minibutton" type="button" title="Refresh Datatable"><div class="tlbr-refresh">&nbsp;</div></button>
                         
                         <!--
@@ -544,7 +475,7 @@ $(document).ready(function(e) {
 </div>
 
 
- <div class="modal fade" id="mdl-frm-model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+ <div class="modal fade" id="mdl-frm-itemcat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -552,33 +483,7 @@ $(document).ready(function(e) {
           <h4 class="modal-title"></h4>
         </div>
         <div class="modal-body">
-			<div class="modal-parent-child">
-            
-            	<ul class="nav nav-tabs" id="modelTab">
-                  <li class="active"><a href="#tab-general" data-toggle="tab">General</a></li>
-                  <li><a href="#tab-property" data-toggle="tab">Properties</a></li>                 
-                </ul>
-                
-                <div class="tab-content">
-                    <div class="tab-pane active" id="tab-general">
-                        <div class="modal-body-parent">
-                		</div>
-                    </div>
-                    <div class="tab-pane" id="tab-property">
-                    	
-                        <div class="modal-body-child" style="margin-top: 20px;">
-                        </div>
-                        <div class="modal-body-item">
-                        </div>
-                    </div>
-                    <div class="tab-pane" id="tab-inventory">
-                        
-                    </div>
-                </div>
-                
-                
-                
-           	</div>
+			
         </div>
         <div class="modal-footer">
           <!--
