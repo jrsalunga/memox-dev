@@ -2,7 +2,7 @@
 include_once('../../lib/initialize.php');
 !$session->is_logged_in() ? redirect_to("../../login"): "";
 ?>
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en-ph">
 <head>
 <meta charset="utf-8">
@@ -77,7 +77,7 @@ include_once('../../lib/initialize.php');
 								<?php
 									$brands = Brand::find_all();					
 									foreach($brands as  $brand) {                        
-									   echo "<option value=\"".strtolower($brand->id)."\">". $brand->descriptor ."</option>";
+									   echo "<option value=\"".$brand->id."\">". $brand->descriptor ."</option>";
 									}
 								?>
                        			</select>
@@ -98,7 +98,7 @@ include_once('../../lib/initialize.php');
 								<?php
 									$prodcats = Prodcat::find_all();					
 									foreach($prodcats as  $prodcat) {                        
-									   echo "<option value=\"".strtolower($prodcat->id)."\">". $prodcat->descriptor ."</option>";
+									   echo "<option value=\"".$prodcat->id."\">". $prodcat->descriptor ."</option>";
 									}
 								?>
                        			</select>
@@ -282,7 +282,7 @@ $(document).ready(function(e) {
 	
 	var productView = new ParentChildModal({model: product, collection: prodprops});
 	
-	//console.log(productView.el);
+	
 	
 	
 	
@@ -331,6 +331,7 @@ $(document).ready(function(e) {
 		"bProcessing": true,
         "bServerSide": true,
         "sAjaxSource": "../api/datatables/v/product",
+		"aaSorting": [[ 1, "asc" ]],
 		"fnHeaderCallback":  function( nHead, aData, iStart, iEnd, aiDisplay ) { 
 				//var title = [,"Code","Descriptor"];
 				//console.log(title.length);

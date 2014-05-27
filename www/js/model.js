@@ -277,10 +277,10 @@ var	ParentChildModal = Backbone.View.extend({
 
 			var attrs = { }, k;
 			for(k in this.model.attributes) {
-				//attrs[k] = product.attributes[k];
+				//attrs[k] = product.attributes[k];	
 				if(k.substr(k.length - 2) === 'id' && k.length > 2){
 					console.log(k+' - '+this.model.get(k)+' - '+attrs[k]);
-					console.log(this.$el.find(".table-model").find('#'+k));
+					console.log(this.$el.find(".table-model").find('#'+k+' option[value='+this.model.get(k)+']'));
 					this.$el.find(".table-model").find('#'+k+' option[value='+this.model.get(k)+']').attr('selected', 'selected');
 				}
 				//console.log(k+' - '+this.model.get(k)+' - '+attrs[k]);

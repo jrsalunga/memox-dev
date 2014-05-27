@@ -88,7 +88,7 @@ require_once(ROOT.DS.'classes'.DS.'model'.DS.'class.view.prodpropproperty.php');
 
 
 
-#require_once(ROOT.DS.'classes'.DS.'class.cleanurl.php');
+require_once(ROOT.DS.'classes'.DS.'class.cleanurl.php');
 
 
 

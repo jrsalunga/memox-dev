@@ -13,6 +13,14 @@ $vApvhdr = "SELECT a.refno, a.date, b.descriptor as supplier, a.supplierid, a.su
 FROM apvhdr a, supplier b
 WHERE a.supplierid = b.id";
 
+
+$vApvhdr2 = "SELECT a.refno, a.valuedate as date,
+DATE_ADD(a.valuedate, INTERVAL a.terms DAY) AS due,
+b.descriptor as supplier, a.supprefno, a.porefno, a.terms, a.totamount, a.balance, a.posted, a.notes, a.supplierid, a.cancelled, a.printctr, a.totline, a.id
+FROM apvhdr a
+LEFT JOIN supplier b
+ON a.supplierid = b.id";
+
 $vProduct = "SELECT a.code, c.descriptor as brand, d.descriptor as model, a.descriptor, e.descriptor as category, b.descriptor as type,
        a.onhand, a.minlevel, a.maxlevel, a.reorderqty, a.unitprice, a.floorprice, a.avecost,
 	     a.brandid, a.modelid, a.prodcatid, a.typeid, a.serialized, a.uom, a.longdesc, a.picfile, a.id

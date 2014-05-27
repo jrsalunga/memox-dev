@@ -6,14 +6,29 @@ require_once(ROOT.DS.'classes'.DS.'database.php');
 class User extends DatabaseObject{
 	
 	protected static $table_name="user";
-	protected static $db_fields = array('id', 'username' , 'password' );
+	protected static $db_fields = array('id', 'code' ,'descriptor' ,'password', 'admin');
 	
 	/*
 	* Database related fields
 	*/
 	public $id;
-	public $username;
+	public $code;
+	public $descriptor;
 	public $password;
+	public $admin;
+	
+	
+	
+	public static function auth($u=NULL, $p=NULL){
+		global $database;
+		if($u!=NULL && $p!=NULL){
+			$sql = "SELECT * FROM ".static::$table_name. " WHERE code='". $u ."' AND password = '". $p ."' LIMIT 1";
+			$result = self::find_by_sql($sql);	
+		}
+
+		return ($database->affected_rows() >= 1) ? array_shift($result) : false ;
+		
+	}
 	
 	
 }

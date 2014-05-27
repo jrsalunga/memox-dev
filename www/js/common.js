@@ -5,7 +5,7 @@ var apiPath = rootpath +'/api';
 $(document).ready(function() {
 	
 
-	//$('#h-main-logo > img').attr('src','../images/mfi-logo.jpg');
+	//$('#h-main-logo > img').attr('src','/images/mfi-logo.jpg');
 	//$('.comp-name > h1').text('Modularfusion Inc');
 
 	

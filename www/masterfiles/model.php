@@ -239,6 +239,7 @@ $(document).ready(function(e) {
         "bServerSide": true,
         "sAjaxSource": "../api/datatables/v/model",
 	//	"sAjaxSource": "../www/test/datatable_test.php"
+	 	"aaSorting": [[ 2, "asc" ]],
 		"fnHeaderCallback":  function( nHead, aData, iStart, iEnd, aiDisplay ) { 
 				
 				//for(i=0; i<=$('th', nHead).length-1; i++) {
@@ -249,7 +250,8 @@ $(document).ready(function(e) {
 			//{   "sTitle": "<input type='checkbox' class='select-all'></input>","mDataProp": null, "sWidth": "20px", "sDefaultContent": "<input type='checkbox' ></input>", "bSortable": false},
             { "mData": "code",  "sTitle": "Code",
 				"mRender": function ( data, type, full ) {
-							return data+'<div class="tb-data-action"><a class="row-delete" href="#">&nbsp;</a><a class="row-edit" href="#">&nbsp;</a></div>';
+							
+							return data+'<div class="tb-data-action"><a class="row-delete" href="#">&nbsp;</a><a class="row-edit" href="#">&nbsp;</a><a class="row-prop" href="/masterfiles/model-prop/'+full.id+'">&nbsp;</a></div>';
 				}
 			},
             { "mData": "descriptor",  "sTitle": "Descriptor" },

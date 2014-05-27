@@ -23,6 +23,7 @@ RewriteRule ^propcat(\/.*)*$ /masterfiles/propcat.php
 RewriteRule ^property(\/.*)*$ /masterfiles/property.php
 RewriteRule ^brand(\/.*)*$ /masterfiles/brand.php
 RewriteRule ^model(\/.*)*$ /masterfiles/model.php
+RewriteRule ^model-prop(\/.*)*$ /masterfiles/model-prop.php
 #RewriteRule ^model(\/.*)*$ /masterfiles/model2.php
 RewriteRule ^itemcat(\/.*)*$ /masterfiles/itemcat.php
 RewriteRule ^item(\/.*)*$ /masterfiles/item.php

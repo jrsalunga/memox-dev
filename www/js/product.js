@@ -476,6 +476,8 @@ var	ParentChildModal = Backbone.View.extend({
 			return this;
 		},
 		renderModelSelector: function(e){
+
+
 			var that = this;
 			var brandid = $('#brandid').val();
 			
@@ -541,6 +543,7 @@ var	ParentChildModal = Backbone.View.extend({
 		    this.modalChangeTitle();
 		},
 		populate: function(){
+			console.log(this.model.toJSON());
 			var that = this;
 			
 			this.btnSaveDisable();
@@ -570,8 +573,17 @@ var	ParentChildModal = Backbone.View.extend({
 		        		this.$el.find(".table-model #toogle-"+k).prop('checked', true);
 		        	}
 		        } else {
-		       		//console.log(k+' - '+attrs[k]);
-		       		this.$el.find(".table-model #"+k).val(this.model.get(k));
+		       		console.log(k+' - '+attrs[k]);
+		       		
+
+		       		if(k.substr(k.length - 2) === 'id'){
+		       			//console.log($(".table-model").find('#'+k).css('border', '2px red solid'));
+		       			//console.log($(".table-model").find('#'+k+' option[value='+attrs[k]+']'));
+						$(".table-model").find('#'+k+' option[value='+attrs[k]+']').attr('selected', 'selected');
+					}
+
+					this.$el.find(".table-model #"+k).val(this.model.get(k));
+
 		       		
 		       		if(k=='picfile'){
 		       			var template;
@@ -1082,7 +1094,7 @@ var DataGridView = Backbone.View.extend({
 			e.preventDefault();
 			e.stopPropagation();
 			var that = this;
-
+		
 			if(this.model.get('mode') == 'edit'){
 
 			} else {

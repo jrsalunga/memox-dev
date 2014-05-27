@@ -12,7 +12,7 @@ include_once('../../lib/initialize.php');
 <link rel="shortcut icon" type="image/x-icon" href="../../images/memoxpress-favicon.jpg" />
 
 <link rel="stylesheet" href="../css/bootstrap.css">
-<link rel="stylesheet" href=../"css/styles-ui.css">
+<link rel="stylesheet" href="../css/styles-ui.css">
 <link rel="stylesheet" href="../css/main-ui.css">
 
 

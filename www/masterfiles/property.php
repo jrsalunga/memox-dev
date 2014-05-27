@@ -179,6 +179,7 @@ $(document).ready(function(e) {
         "bServerSide": true,
         "sAjaxSource": "../api/datatables/v/property",
 	//	"sAjaxSource": "../www/test/datatable_test.php"
+		"aaSorting": [[ 2, "asc" ]],
 		"fnHeaderCallback":  function( nHead, aData, iStart, iEnd, aiDisplay ) { 
 				
 				//var title = [,"Code","Descriptor"];

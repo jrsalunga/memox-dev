@@ -439,6 +439,15 @@ button.minibutton[disabled]:hover {
 	margin-right: 5px;
 }
 
+
+.modal-tb-detail tbody tr td:first-of-type > div > a.row-prop,
+.tb-data tbody tr td:first-of-type > div > a.row-prop {
+	background-image: url(../images/glyphicons-halflings.png);
+	opacity: 0.5;
+	background-position: -1px -47px;
+	margin-right: 5px;
+}
+
 .modal-tb-detail tbody tr td:first-of-type > div > a.row-delete:hover,
 .tb-data tbody tr td:first-of-type > div > a.row-delete:hover {
 	background-image: url(../images/glyphicons-halflings.png);
@@ -452,7 +461,13 @@ button.minibutton[disabled]:hover {
 	background-image: url(../images/glyphicons-halflings.png);
 	opacity: 1;
 	background-position: -0px -71.5px;
-	
+}
+
+.modal-tb-detail tbody tr td:first-of-type > div > a.row-prop:hover,
+.tb-data tbody tr td:first-of-type > div > a.row-prop:hover {
+	background-image: url(../images/glyphicons-halflings.png);
+	opacity: 1;
+	background-position: -1px -47px;
 }
 
 .tb-data-action > .row-post {
@@ -1153,6 +1168,23 @@ input[type=checkbox].toggle {
 
 .product-profile-lpane .img-holder img{
 
+}
+
+
+.property-list {
+	margin-left: 20px;
+}
+
+.property-list li{
+	cursor: pointer;
+}
+
+.propval + button {
+	display: none;
+}
+
+.property-value-list li{
+	cursor: pointer;
 }
 
 

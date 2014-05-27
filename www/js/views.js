@@ -1,23 +1,23 @@
 
 _.extend(Backbone.Validation.callbacks, {
-		valid: function(view, attr, selector) {
-			var input = view.$('[' + selector + '=' + attr + ']');
-			input.next('span.error').remove();
-			
-			console.log('valid');
-	  	},
-	  	invalid: function(view, attr, error, selector) {
-			var input = view.$('[' + selector + '=' + attr + ']');
-			//console.log(input);
-			input.next('span.error').remove();
-			var span = '<span class="error">'+ error +'</span>';
-			input.addClass('invalid');
-			input.focus();
-			input.after(span);
-			
-			console.log('invalid');
-	  	}
-	});
+	valid: function(view, attr, selector) {
+		var input = view.$('[' + selector + '=' + attr + ']');
+		input.next('span.error').remove();
+		
+		console.log('valid');
+  	},
+  	invalid: function(view, attr, error, selector) {
+		var input = view.$('[' + selector + '=' + attr + ']');
+		//console.log(input);
+		input.next('span.error').remove();
+		var span = '<span class="error">'+ error +'</span>';
+		input.addClass('invalid');
+		input.focus();
+		input.after(span);
+		
+		console.log('invalid');
+  	}
+});
 
 
 
@@ -633,6 +633,127 @@ var ModelpropsView2 = Backbone.View.extend({
 
 
 
+
+var PropertyListView = Backbone.View.extend({
+	el: '.property-list',
+	initialize: function(){
+		//this.productid = this.options.productid; 
+		this.model.set('modelid', this.options.productid);
+	},
+	events: {
+		'focus input.propval': 'select',
+		'click button': 'saveMe',
+		'blur input.propval':'activateSave',
+	},
+	select: function(e){
+		//console.log('fdsa');
+		if(!_.isEmpty($(e.currentTarget).val())){
+			this.preval = $(e.currentTarget).val();
+		} 
+		this.model.set('propertyid', $(e.currentTarget).parent().data('propertyid'));
+	},
+	saveMe: function(e){
+		var id = $(e.currentTarget).siblings('input.propval').data('id');
+		//console.log(id);
+		if(_.isEmpty(id)){
+			this.model.unset('id');
+		} else {
+			this.model.set('id', id);
+		}
+		
+		var val = $(e.currentTarget).siblings('input.propval').val();
+		if(_.isEmpty(val)){
+			this.model.unset('descriptor');
+		} else {
+			this.model.set('descriptor', val);
+		}
+
+		this.model.set('propertyid', $(e.currentTarget).parent().data('propertyid'));
+		
+		console.log(this.model.toJSON());
+
+		this.model.save({}, {
+			success: function(model, respone){
+				//console.log(model.get('propertyid'));
+				$('#'+model.get('propertyid')).prop('defaultValue', model.get('descriptor'));
+				$('#'+model.get('propertyid')).siblings('button').css('display', 'none');
+			}
+		})
+	},
+	activateSave: function(e){
+		//console.log(this.preval);
+		//console.log($(e.currentTarget).prop('value'));
+		var val = $(e.currentTarget).val();
+		if(!_.isEmpty(val) && this.preval !== val){
+			$(e.currentTarget).siblings('button').css('display', 'inline-block');
+		} else {
+			$(e.currentTarget).siblings('button').css('display', 'none');
+		}
+		
+	}
+});
+
+var PropertyValueView = Backbone.View.extend({
+	tagName: 'li',
+	initialize: function(){
+		this.model.on('change', this.render, this);
+		this.template = _.template('<div><%-descriptor%></div>');
+	},
+	events: {
+		'click div':'selectVal'
+	},
+	render: function(){
+		this.$el.html(this.template(this.model.toJSON()));
+		return this;
+	},
+	selectVal: function(e){
+
+		var val = $(e.currentTarget).text();
+
+		var input = $('#'+this.model.get('propertyid'));
+		console.log(input.prop("defaultValue"));
+
+			
+		console.log(this.preval);
+		if(!_.isEmpty(val) && input.val() !== val){
+			input.val(val);
+			if(input.prop("defaultValue") !== val){
+				input.siblings('button').css('display', 'inline-block');
+			} else {
+				input.siblings('button').css('display', 'none');
+			}
+			
+		} 
+
+	}
+});
+
+var PropertyValueListView = Backbone.View.extend({
+	el: '.property-value-list',
+	initialize: function(){
+		this.productid = this.options.productid;
+		this.modelprops = new Modelprops();
+		this.modelprops.on('reset', this.render, this);
+		this.model.on('change:propertyid', this.select, this);
+	},
+	render:function () {
+		this.$el.html('');
+		this.addAll();
+        return this;
+	},
+	addOne: function(data){
+		var propertyValueView = new PropertyValueView({model: data});
+		this.$el.append(propertyValueView.render().el);
+	},
+	addAll: function(){
+		this.modelprops.forEach(this.addOne, this);
+	},
+	select: function(e){
+		this.modelprops.url = '/api/search/property/'+this.model.get('propertyid');
+		this.modelprops.fetch({reset: true});
+		//console.log('id changed to: '+ this.model.get('id'));
+	}
+});
 
 
 $(document).ready(function(e) {

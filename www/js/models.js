@@ -112,7 +112,7 @@ var prodprop = new Prodprop();
 
 
 var Modelprop = Backbone.Model.extend({
-	urlRoot: '../api/s/modelprop',
+	urlRoot: '/api/s/modelprop',
 	defaults: {
 		modelid: '',
 		propertyid: '',

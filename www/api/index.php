@@ -120,11 +120,56 @@ $app->get('/property/all/:productid/:modelid', 'getAllProperty');
 $app->get('/txn/p/:parent/:child/:id', 'getParentChild');
 $app->get('/txn/pv/:parent/:child/:id', 'getViewParentChild');
 
-
+$app->get('/search/property/:propertyid', 'searchProperty');
 
 
  /*****************************  Run App **************************/
 $app->run();
+
+function searchProperty($propertyid){
+
+    /*
+    $arr = array();
+
+    $modelprops = Modelprop::find_all_by_field_id('property', $propertyid);
+
+    if(!empty($modelprops)){
+        foreach ($modelprops as $modelprop) {
+            $m = new StdClass;
+            $m->descriptor = $modelprop->descriptor;
+            array_push($arr, $m);
+        }
+    }
+
+    $prodprops = Prodprop::find_all_by_field_id('property', $propertyid);
+
+    if(!empty($prodprops)){
+        foreach ($prodprops as $prodprop) {
+            $m = new StdClass;
+            $m->descriptor = $prodprop->descriptor;
+            array_push($arr, $m);
+        }
+    }
+    
+
+    echo json_encode($arr);
+    */
+
+
+    $sql = "SELECT b.descriptor as descriptor, b.propertyid ";
+    $sql .= "FROM property a, modelprop b WHERE a.id = b.propertyid ";
+    $sql .= "AND b.propertyid = '". $propertyid ."' ";
+    $sql .= "UNION ";
+    $sql .= "SELECT b.descriptor as descriptor, b.propertyid ";
+    $sql .= "FROM property a, prodprop b WHERE a.id = b.propertyid  ";
+    $sql .= "AND b.propertyid = '". $propertyid ."'";
+
+
+    $modelprops = Modelprop::find_by_sql($sql);
+
+    echo json_encode($modelprops);
+
+}
 
 function getParentChild($parent, $child, $id){
 
@@ -1184,13 +1229,13 @@ function authUserLogin() {
     }
     */
 
-    #$found_user = User::auth($usr,$pwd);
+    $found_user = User::auth($usr,$pwd);
 
-    #if($found_user) {
-    if($usr == 'admin' && $pwd =='password') {
+    if($found_user) {
+    //if($usr == 'admin' && $pwd =='password') {
 
-        $_SESSION['cid'] = '001';
-        $session->set_fullname('Juan dela Cruz');
+        $session->login($found_user);
+        $session->set_fullname($found_user->descriptor);
     
         $respone = array(
             'status' => 'ok', 

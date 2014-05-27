@@ -24,6 +24,12 @@ class Modelprop extends DatabaseObject{
 			return parent::find_by_sql("SELECT * FROM ".static::$table_name." ".$order);
 		}
   	}
+	
+	public static function find_by_modelid_propertyid($modelid, $propertyid){
+		$sql = "SELECT * FROM ".static::$table_name. " WHERE modelid = '".$modelid."' AND propertyid = '".$propertyid."'";
+		$result_array = parent::find_by_sql($sql);
+		return !empty($result_array) ? array_shift($result_array) : false;
+	}
 }
 
 
